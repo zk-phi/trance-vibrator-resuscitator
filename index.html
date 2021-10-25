@@ -1,0 +1,58 @@
+<body>
+  <h1>Trance Vibrator を音に連動させるくん</h1>
+
+  <p>
+    PS2 の振動デバイス ASCII Trance Vibrator を音声ソースに連動させて駆動します。
+    ゲーム、映画やライブ映像に連動させるとなかなか楽しいです。
+  </p>
+
+  <ul>
+    <li>最新の Chrome でしか (おそらく) 動きません。</li>
+    <li>無保証です。</li>
+    <li>PC の音声に連動させたい場合は「ステレオミキサー」とか「仮想オーディオデバイス」で検索すると幸せになれると思います。</li>
+    <li>動きが怪しい時はタブを更新したりデバイスを繋ぎ直したりしてみてください。</li>
+    <li>停止ボタンは実装していないので、遊び終わったらタブを閉じて Trance Vibrator を抜いてください。</li>
+  </ul>
+
+  <h2>準備</h2>
+
+  <h3>Trance Vibrator</h3>
+  <section id="tranceVibrator">
+    <p>
+      Trance Vibrator を USB で繋いでから下のボタンを押してください。
+    </p>
+    <button onclick="tranceVibratorInit();">Trance Vibrator に接続</button>
+  </section>
+
+  <h3>テスト</h3>
+  <section>
+    <p>
+      Trance Vibrator がちゃんと接続できていれば振動します。
+    </p>
+    <button onclick="sendMax();">振動 ON</button>
+    <button onclick="sendMin();">振動 OFF</button>
+  </section>
+
+  <h3>音声ソース</h3>
+  <section id="audioDevice">
+    <p>
+      どの音声ソースに連動させるかを選んでください。
+      極端に低音の強い音源にすると振動しっぱなしになっちゃうかもです。
+    </p>
+    <button onclick="enumerateDevices();">デバイス一覧を取得</button>
+  </section>
+
+  <h2>起動</h2>
+  <section id="run">
+    <p>
+      準備ができたら押してください。
+    </p>
+    <button onclick="run();">Run</button>
+  </section>
+  <section id="status" style="display: none">
+    <div>振動強さ: <span id="vibratorValue"></span></div>
+    <pre id="spectrum"></pre>
+  </section>
+
+  <script src="browser.js"></script>
+</body>
