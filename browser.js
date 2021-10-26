@@ -1,6 +1,6 @@
 const FFT_SIZE = 256;
-const AMPLITUDE = 1.0;
-const FREQ_RANGE = [0, Math.floor(FFT_SIZE / 50)];
+const EXPONENT = 4;
+const FREQ_RANGE = [0, Math.floor(FFT_SIZE / 100)];
 
 /* ui */
 
@@ -108,10 +108,10 @@ async function run () {
   scriptProcessorNode.onaudioprocess = function (e) {
     analyserNode.getByteFrequencyData(dataArray);
     let sum = 0;
-    for (let i = FREQ_RANGE[0]; i <= FREQ_RANGE[1]; i++) {
-      sum += Math.pow(dataArray[i], 2) * (1 / 255);
+    for (let i = FREQ_RANGE[0]; i < FREQ_RANGE[1]; i++) {
+      sum += Math.pow(dataArray[i] / 255, 2);
     }
-    const value = Math.min(255, Math.floor(sum / (FREQ_RANGE[1] - FREQ_RANGE[0]) * AMPLITUDE));
+    const value = Math.round(Math.pow(sum / (FREQ_RANGE[1] - FREQ_RANGE[0]), EXPONENT) * 255);
     tranceVibratorSend(value);
     updateVibratorValue(value);
     renderSpectrum(dataArray);
