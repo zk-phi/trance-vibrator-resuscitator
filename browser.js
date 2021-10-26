@@ -22,6 +22,7 @@ function listDevices (devices) {
 
 function updateStreamState (device) {
   document.getElementById("audioDevice").innerHTML = `${device.label} に接続済み`;
+  document.getElementById("status").style.display = "block";
 }
 
 const valueEl = document.getElementById("vibratorValue");
@@ -32,11 +33,6 @@ function updateVibratorValue (value) {
 const spectrumEl = document.getElementById("spectrum");
 function renderSpectrum (arr) {
   spectrumEl.innerHTML = arr.reduce((l, r) => l + "|".repeat(r * r / 255) + "\n", "");
-}
-
-function updateRunningState () {
-  document.getElementById("run").style.display = "none";
-  document.getElementById("status").style.display = "block";
 }
 
 /* trance vibrator */
@@ -84,18 +80,13 @@ async function enumerateDevices () {
   listDevices(devs);
 }
 
+/* entrypoint */
+
 async function streamInit (device) {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: { deviceId: device.deviceId },
     video: false,
   });
-  updateStreamState(device);
-}
-
-/* entrypoint */
-
-async function run () {
-  if (!stream) return;
 
   const ctx = new AudioContext();
   const sourceNode = ctx.createMediaStreamSource(stream);
@@ -120,5 +111,5 @@ async function run () {
   sourceNode.connect(analyserNode);
   analyserNode.connect(scriptProcessorNode);
   scriptProcessorNode.connect(ctx.destination);
-  updateRunningState();
+  updateStreamState(device);
 }

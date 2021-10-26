@@ -17,9 +17,8 @@
     <li>停止ボタンは実装していないので、遊び終わったらタブを閉じて Trance Vibrator を抜いてください。</li>
   </ul>
 
-  <h2>準備</h2>
+  <h2>Trance Vibrator と接続</h2>
 
-  <h3>Trance Vibrator</h3>
   <section id="tranceVibrator">
     <p>
       Trance Vibrator を USB で繋いでから下のボタンを押してください。
@@ -36,21 +35,13 @@
     <button onclick="sendMin();">振動 OFF</button>
   </section>
 
-  <h3>音声ソース</h3>
+  <h2>音声ソースと接続</h2>
   <section id="audioDevice">
     <p>
       どの音声ソースに連動させるかを選んでください。
       極端に低音の強い音源にすると振動しっぱなしになっちゃうかもです。
     </p>
     <button onclick="enumerateDevices();">デバイス一覧を取得</button>
-  </section>
-
-  <h2>起動</h2>
-  <section id="run">
-    <p>
-      準備ができたら押してください。
-    </p>
-    <button onclick="run();">Run</button>
   </section>
   <section id="status" style="display: none">
     <div>振動強さ: <span id="vibratorValue"></span></div>
