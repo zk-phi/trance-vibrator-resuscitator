@@ -22,14 +22,14 @@
       <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
       <p>- TRANCE_VIBRATOR_1: <span id="trvStatus"><button onclick="connectTrv();">CONNECT</button></span></p>
       <p>- PHONE_VIBRATOR: <span id="vibStatus"><button onclick="enableVib();">ENABLE</button></span> (experimental, iOS unsupported)</p>
-      <p>Press "RUN" button when you're ready.</p>
-      <button id="start" onclick="play();">RUN</button>
+      <p>Press "PLAY" button when you're ready.</p>
+      <button id="start" onclick="play();">PLAY</button>
     </section>
   </div>
 
   <div id="control" style="display: none">
     <div>TIME: <span id="time"></span></div>
-    <div>VIBRATOR_1: <span id="vibration"></span></div>
+    <div>VIBRATOR_1: <span id="vibrationContainer"><span id="vibration"></span></span></div>
   </div>
 
   <script src="rez.js"></script>

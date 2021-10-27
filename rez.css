@@ -40,6 +40,20 @@ html {
   z-index: 2;
 }
 
+#vibrationContainer {
+  display: inline-block;
+  height: 1em;
+  width: 180px;
+  padding: 0;
+  border: 1px solid var(--fg);
+}
+
+#vibration {
+  display: inline-block;
+  height: 1em;
+  background-color: var(--fg);
+}
+
 a {
   color: var(--fg);
 }

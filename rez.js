@@ -196,13 +196,13 @@ function monitorPlayerStatus () {
       sendTrv(value);
       sendVib(value);
       timeEl.innerHTML = time;
-      vibrationEl.innerHTML = value;
+      vibrationEl.style.width = `${value/2.55}%`;
       break;
     default:
       sendTrv(0);
       sendVib(0);
       timeEl.innerHTML = "(paused)";
-      vibrationEl.innerHTML = "(paused)";
+      vibrationEl.style.width = `0`;
   }
 }
 
