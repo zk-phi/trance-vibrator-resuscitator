@@ -48,7 +48,7 @@ async function sendTrv (value) {
 
 async function connectTrv () {
   if (!navigator.usb) {
-    alert("WebUSB unsupported in your browser");
+    alert("WebUSB unsupported on your browser");
     return;
   }
   trv = await navigator.usb.requestDevice({
@@ -70,7 +70,7 @@ let vibEnabled = false;
 
 function enableVib () {
   if (!navigator.vibrate) {
-    alert("Vibration API unsupported in your browser");
+    alert("Vibration API unsupported on your browser");
     return;
   }
   vibEnabled = true;
