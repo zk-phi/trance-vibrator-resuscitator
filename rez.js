@@ -3,8 +3,14 @@ let trv;
 
 /* --- youtube player */
 
+/* load youtube js api */
+!(function () {
+  const script = document.createElement('script');
+  script.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(script);
+})();
+
 /* this function is called automatically when the iframe_api is ready */
-const playerEl = document.getElementById("player");
 function onYouTubeIframeAPIReady () {
   player = new YT.Player("player", {
     videoId: "N_ATbQLVQjE",
@@ -53,6 +59,17 @@ async function connectTrv () {
   await sendTrv(128);
   setTimeout(function () { sendTrv(0); }, 250);
   document.getElementById("trvStatus").innerHTML = "READY";
+}
+
+/* --- built-in vibrator  */
+
+let vibratingState = false;
+function sendVib (value) {
+  const newVibratingState = value > 128 ? true : false;
+  if (navigator.vibrate && vibratingState != newVibratingState) {
+    navigator.vibrate(newVibratingState ? 1000 : 0);
+    vibratingState = newVibratingState;
+  }
 }
 
 /* --- songs */
@@ -125,8 +142,8 @@ const track4 = withBPM(140, [
 const track5 = withBPM(90, [
   /* intro */
   /* 1                    2                       3                       4                   */
-  0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xef, 0xdf, 0xdf, 0xcf, 0xcf, 0xbf, 0xbf,
-  0xaf, 0xaf, 0x9f, 0x9f, 0x8f, 0x8f, 0x7f, 0x7f, 0x6f, 0x6f, 0x5f, 0x5f, 0x4f, 0x4f, 0x3f, 0x3f,
+  0xff, 0xff, 0xaf, 0xaf, 0x9f, 0x9f, 0x9f, 0x9f, 0x8f, 0x8f, 0x8f, 0x8f, 0x7f, 0x7f, 0x7f, 0x7f,
+  0x6f, 0x6f, 0x6f, 0x6f, 0x5f, 0x5f, 0x5f, 0x5f, 0x4f, 0x4f, 0x4f, 0x4f, 0x3f, 0x3f, 0x3f, 0x3f,
   0xaf, 0xaf, 0xaf, 0xaf, 0x9f, 0x9f, 0x9f, 0x9f, 0x8f, 0x8f, 0x8f, 0x8f, 0x7f, 0x7f, 0x7f, 0x7f,
   0x6f, 0x6f, 0x6f, 0x6f, 0x5f, 0x5f, 0x5f, 0x5f, 0x4f, 0x4f, 0x4f, 0x4f, 0x3f, 0x3f, 0x3f, 0x3f,
   0xaf, 0xaf, 0xaf, 0xaf, 0x9f, 0x9f, 0x9f, 0x9f, 0x8f, 0x8f, 0x8f, 0x8f, 0x7f, 0x7f, 0x7f, 0x7f,
@@ -162,13 +179,15 @@ function monitorPlayerStatus () {
       const time = player.getCurrentTime();
       const value = vibrationValue(time);
       sendTrv(value);
+      sendVib(value);
       timeEl.innerHTML = time;
       vibrationEl.innerHTML = value;
       break;
     default:
       sendTrv(0);
-      timeEl.innerHTML = "(stopped)";
-      vibrationEl.innerHTML = "(stopped)";
+      sendVib(0);
+      timeEl.innerHTML = "(paused)";
+      vibrationEl.innerHTML = "(paused)";
   }
   requestAnimationFrame(monitorPlayerStatus);
 }
@@ -186,10 +205,3 @@ function play () {
   document.getElementById("setup").remove();
   document.getElementById("control").style.display = "block";
 }
-
-/* load youtube js api */
-!(function () {
-  const script = document.createElement('script');
-  script.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(script);
-})();
