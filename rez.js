@@ -17,9 +17,7 @@ function onYouTubeIframeAPIReady () {
     events: {
       onReady: function () {
         document.getElementById("videoStatus").innerHTML = "READY";
-        player.unMute();
         player.setVolume(0);
-        player.setPlaybackRate(1);
         player.setLoop(true);
         player.seekTo(6);
         player.playVideo();
