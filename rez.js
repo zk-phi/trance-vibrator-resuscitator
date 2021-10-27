@@ -22,7 +22,7 @@ function onYouTubeIframeAPIReady () {
     },
     events: {
       onReady: function () {
-        document.getElementById("videoStatus").innerHTML = "READY";
+        document.getElementById("videoStatus").innerHTML = "LOADED";
         player.setVolume(0);
         player.setLoop(true);
         player.seekTo(6);
@@ -48,6 +48,10 @@ async function sendTrv (value) {
 }
 
 async function connectTrv () {
+  if (!navigator.usb) {
+    alert("WebUSB unsupported in your browser");
+    return;
+  }
   trv = await navigator.usb.requestDevice({
     filters: [
       { vendorId: 0x0b49, productId: 0x064f },
@@ -58,15 +62,27 @@ async function connectTrv () {
   await trv.claimInterface(0);
   await sendTrv(128);
   setTimeout(function () { sendTrv(0); }, 250);
-  document.getElementById("trvStatus").innerHTML = "READY";
+  document.getElementById("trvStatus").innerHTML = "CONNECTED";
 }
 
 /* --- built-in vibrator  */
 
+let vibEnabled = false;
+
+function enableVib () {
+  if (!navigator.vibrate) {
+    alert("Vibration API unsupported in your browser");
+    return;
+  }
+  vibEnabled = true;
+  navigator.vibrate(250);
+  document.getElementById("vibStatus").innerHTML = "ENABLED";
+}
+
 let vibratingState = false;
 function sendVib (value) {
   const newVibratingState = value > 128 ? true : false;
-  if (navigator.vibrate && vibratingState != newVibratingState) {
+  if (vibEnabled && vibratingState != newVibratingState) {
     navigator.vibrate(newVibratingState ? 1000 : 0);
     vibratingState = newVibratingState;
   }
@@ -189,7 +205,6 @@ function monitorPlayerStatus () {
       timeEl.innerHTML = "(paused)";
       vibrationEl.innerHTML = "(paused)";
   }
-  requestAnimationFrame(monitorPlayerStatus);
 }
 
 function play () {
@@ -201,7 +216,7 @@ function play () {
   player.unMute();
   player.setVolume(100);
   player.setPlaybackRate(1);
-  monitorPlayerStatus();
+  setInterval(monitorPlayerStatus, 60);
   document.getElementById("setup").remove();
   document.getElementById("control").style.display = "block";
 }
