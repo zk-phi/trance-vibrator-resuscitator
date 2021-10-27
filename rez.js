@@ -12,8 +12,6 @@ function onYouTubeIframeAPIReady () {
       loop: 1,
       autoplay: 1,
       playsinline: 1,
-      controls: 0,
-      disablekb: 1,
       enablejsapi: 1,
     },
     events: {
@@ -170,7 +168,9 @@ function monitorPlayerStatus () {
       vibrationEl.innerHTML = value;
       break;
     default:
-      timeEl.innerHTML = "(Stopped)";
+      sendTrv(0);
+      timeEl.innerHTML = "(stopped)";
+      vibrationEl.innerHTML = "(stopped)";
   }
   requestAnimationFrame(monitorPlayerStatus);
 }

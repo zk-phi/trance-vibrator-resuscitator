@@ -16,8 +16,6 @@ html {
   left: 0;
   height: 100vh;
   width: 100vw;
-  pointer-events: none;
-  z-index: -1;
 }
 
 #setup {
@@ -30,6 +28,7 @@ html {
   padding: 24px;
   overflow: scroll;
   background: var(--overlay);
+  z-index: 2;
 }
 
 #control {
@@ -38,6 +37,7 @@ html {
   left: 16px;
   padding: 16px;
   background: var(--overlay);
+  z-index: 2;
 }
 
 a {
