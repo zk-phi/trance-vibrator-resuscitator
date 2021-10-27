@@ -17,9 +17,7 @@ function onYouTubeIframeAPIReady () {
     events: {
       onReady: function () {
         document.getElementById("videoStatus").innerHTML = "READY";
-        player.unMute();
         player.setVolume(0);
-        player.setPlaybackRate(1);
         player.setLoop(true);
         player.seekTo(6);
         player.playVideo();
@@ -181,7 +179,9 @@ function play () {
     return;
   }
   player.seekTo(0);
+  player.unMute();
   player.setVolume(100);
+  player.setPlaybackRate(1);
   monitorPlayerStatus();
   document.getElementById("setup").remove();
   document.getElementById("control").style.display = "block";
