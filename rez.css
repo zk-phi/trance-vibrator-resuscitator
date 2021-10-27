@@ -24,8 +24,8 @@ html {
   bottom: 10vh;
   left: 10vw;
   right: 10vw;
-  border-left: 2px solid var(--fg);
-  padding: 24px;
+  border-left: 4px solid var(--fg);
+  padding: 3vh 3vw;
   overflow: scroll;
   background: var(--overlay);
   z-index: 2;
