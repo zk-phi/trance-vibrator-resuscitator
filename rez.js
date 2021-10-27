@@ -11,11 +11,10 @@ function onYouTubeIframeAPIReady () {
     playerVars: {
       loop: 1,
       autoplay: 1,
+      playsinline: 1,
       controls: 0,
       disablekb: 1,
-      rel: 0,
-      showinfo: 0,
-      enablesjsapi: 1,
+      enablejsapi: 1,
     },
     events: {
       onReady: function () {
@@ -49,8 +48,8 @@ async function sendTrv (value) {
 async function connectTrv () {
   trv = await navigator.usb.requestDevice({
     filters: [
-      { vendorId: 0x0b49, productId: 0x064f }
-    ]
+      { vendorId: 0x0b49, productId: 0x064f },
+    ],
   });
   await trv.open();
   await trv.selectConfiguration(1);
