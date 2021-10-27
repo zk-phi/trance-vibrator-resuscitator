@@ -82,7 +82,7 @@ function enableVib () {
 let vibratingState = false;
 function sendVib (value) {
   const newVibratingState = value > 128 ? true : false;
-  if (vibEnabled && vibratingState != newVibratingState) {
+  if (vibEnabled && (vibratingState != newVibratingState)) {
     navigator.vibrate(newVibratingState ? 1000 : 0);
     vibratingState = newVibratingState;
   }
