@@ -1,0 +1,64 @@
+:root {
+  --bg: rgb(0, 0, 0);
+  --overlay: rgba(0, 0, 0, 0.8);
+  --fg: rgb(255, 119, 0);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+#player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none;
+  z-index: -1;
+}
+
+#setup {
+  position: absolute;
+  top: 10vh;
+  bottom: 10vh;
+  left: 10vw;
+  right: 10vw;
+  border-left: 2px solid var(--fg);
+  padding: 24px;
+  overflow: scroll;
+  background: var(--overlay);
+}
+
+#control {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 16px;
+  background: var(--overlay);
+}
+
+a {
+  color: var(--fg);
+}
+
+button {
+  cursor: pointer;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  background: transparent;
+  padding: 8px 12px;
+  font-family: inherit;
+}
+
+a:hover, button:hover {
+  color: var(--bg);
+  background: var(--fg);
+  box-shadow: 0 0 15px var(--fg);
+}
+
+a:active, button:active {
+  opacity: 0.9;
+}

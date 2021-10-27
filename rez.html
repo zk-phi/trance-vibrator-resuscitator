@@ -1,0 +1,35 @@
+<head>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono" rel="stylesheet">
+  <link href="rez.css" rel="stylesheet">
+</head>
+<body>
+  <div id="player"></div>
+
+  <div id="setup">
+    <h1>TRANCE VIBRATOR RESUSCITATOR</h1>
+    <p>Drive "ASCII Trance Vibrator" in sync with "Rez" music.</p>
+    <p>Built with ♡ by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a>.</p>
+    <section>
+      <h2>NOTICES</h2>
+      <p>This app is provided AS IS, without warranty of any kind.</p>
+      <p>Latest Blink-powered browser (including Chrome, Opera, Edge) required.</p>
+    </section>
+    <section>
+      <h2>STATUS</h2>
+      <p>Connect Trance Vibrator via USB, then press "CONNECT" button below.</p>
+      <p>Please reload this page if the video does not load.</p>
+      <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
+      <p>- TRANCE_VIBRATOR: <span id="trvStatus"><button id="trvConnect" onclick="connectTrv();">CONNECT</button></span></p>
+      <p>Press "RUN" button when you're ready.</p>
+      <button id="start" onclick="play();">RUN</button>
+    </section>
+  </div>
+
+  <div id="control" style="display: none">
+    <div>TIME: <span id="time"></span></div>
+    <div>VIBRATION: <span id="vibration"></span></div>
+  </div>
+
+  <script src="rez.js"></script>
+</body>
