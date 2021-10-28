@@ -26,19 +26,19 @@
       <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
       <p>- CONNECTED DEVICES: <span id="deviceCount">0</span></p>
       <p>
-        Add Trance Vibrator (via USB):
-        <button onclick="connectTrv();">ADD</button>
-        <button onclick="connectTrv([1, 0]);">ADD (MAIN only)</button>
-        <button onclick="connectTrv([0, 1]);">ADD (SUB only)</button>
+        Trance Vibrator (USB)
+        <button onclick="connectTrv();">+ ADD</button>
+        <button onclick="connectTrv([1, 0]);">+ ADD (MAIN only)</button>
+        <button onclick="connectTrv([0, 1]);">+ ADD (SUB only)</button>
       </p>
       <p>
-        Add Joy-Con (via Bluetooth):
-        <button onclick="connectJoyCon();">ADD</button>
-        <button onclick="connectJoyCon([1, 0]);">ADD (MAIN only)</button>
-        <button onclick="connectJoyCon([0, 1]);">ADD (SUB only)</button>
+        Joy-Con (Bluetooth)
+        <button onclick="connectJoyCon();">+ ADD</button>
+        <button onclick="connectJoyCon([1, 0]);">+ ADD (MAIN only)</button>
+        <button onclick="connectJoyCon([0, 1]);">+ ADD (SUB only)</button>
       </p>
       <p>
-        Enable built-in vibrator (for Android):
+        Built-in vibrator (Android)
         <span id="vibStatus">
           <button onclick="enableVib();">ENABLE</button>
         </span>
