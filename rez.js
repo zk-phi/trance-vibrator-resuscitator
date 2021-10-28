@@ -35,33 +35,9 @@ function onYouTubeIframeAPIReady () {
 
 /* --- trance vibrator */
 
-async function sendTrv (value) {
-  if (trv) {
-    await trv.controlTransferOut({
-      requestType: "vendor",
-      recipient: "interface",
-      request: 1,
-      value: value,
-      index: 0,
-    });
-  }
-}
-
 async function connectTrv () {
-  if (!navigator.usb) {
-    alert("WebUSB unsupported on your browser");
-    return;
-  }
-  trv = await navigator.usb.requestDevice({
-    filters: [
-      { vendorId: 0x0b49, productId: 0x064f },
-    ],
-  });
-  await trv.open();
-  await trv.selectConfiguration(1);
-  await trv.claimInterface(0);
-  await sendTrv(128);
-  setTimeout(function () { sendTrv(0); }, 250);
+  trv = new TranceVibrator();
+  await trv.connect();
   document.getElementById("trvStatus").innerHTML = "CONNECTED";
 }
 
@@ -230,14 +206,14 @@ function monitorPlayerStatus () {
     case 1:
       const time = player.getCurrentTime();
       const value = vibrationValue(time);
-      sendTrv(value);
+      if (trv) trv.send(value / 255);
       if (joyCon) joyCon.send(value / 255);
       sendVib(value);
       timeEl.innerHTML = time;
       document.body.style.setProperty("--vib1", value / 255);
       break;
     default:
-      sendTrv(0);
+      if (trv) trv.send(0);
       if (joyCon) joyCon.send(0);
       sendVib(0);
       timeEl.innerHTML = "(paused)";
