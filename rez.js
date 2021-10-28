@@ -224,7 +224,6 @@ function play () {
   player.seekTo(0);
   player.unMute();
   player.setVolume(100);
-  player.setPlaybackRate(1);
   setInterval(monitorPlayerStatus, 30);
   document.getElementById("setup").remove();
   document.getElementById("control").style.display = "block";
