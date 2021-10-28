@@ -4,7 +4,7 @@ class TranceVibrator {
       alert("WebUSB unsupported on your browser");
       throw "Error";
     }
-    this.balance = [1.00, 0.75];
+    this.balance = [1.00, 0.50];
   }
 
   async connect () {
