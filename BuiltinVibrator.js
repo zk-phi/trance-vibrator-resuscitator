@@ -20,7 +20,7 @@ class BuiltinVibrator {
   }
 
   send (value) {
-    const newState = value >= 0.5 ? true : false;
+    const newState = value > 0.5 ? true : false;
     if (this.connected && this.state !== newState) {
       navigator.vibrate(newState ? 1000 : 0);
       this.state = newState;
