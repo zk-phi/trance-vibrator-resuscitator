@@ -1,4 +1,5 @@
 let player;
+let vib;
 let trv;
 let joyCon;
 
@@ -51,25 +52,10 @@ async function connectJoyCon () {
 
 /* --- built-in vibrator  */
 
-let vibEnabled = false;
-
 function enableVib () {
-  if (!navigator.vibrate) {
-    alert("Vibration API unsupported on your browser");
-    return;
-  }
-  vibEnabled = true;
-  navigator.vibrate(250);
+  vib = new BuiltinVibrator();
+  vib.connect();
   document.getElementById("vibStatus").innerHTML = "ENABLED";
-}
-
-let vibratingState = false;
-function sendVib (value) {
-  const newVibratingState = value > 128 ? true : false;
-  if (vibEnabled && vibratingState != newVibratingState) {
-    navigator.vibrate(newVibratingState ? 1000 : 0);
-    vibratingState = newVibratingState;
-  }
 }
 
 /* --- songs */
@@ -208,14 +194,14 @@ function monitorPlayerStatus () {
       const value = vibrationValue(time);
       if (trv) trv.send(value / 255);
       if (joyCon) joyCon.send(value / 255);
-      sendVib(value);
+      if (vib) vib.send(value / 255);
       timeEl.innerHTML = time;
       document.body.style.setProperty("--vib1", value / 255);
       break;
     default:
       if (trv) trv.send(0);
       if (joyCon) joyCon.send(0);
-      sendVib(0);
+      if (vib) vib.send(0);
       timeEl.innerHTML = "(paused)";
       document.body.style.setProperty("--vib1", 0);
   }
