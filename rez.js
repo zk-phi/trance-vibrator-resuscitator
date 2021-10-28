@@ -1,7 +1,5 @@
 let player;
-let vib;
-let trv;
-let joyCon;
+let devices = [];
 
 /* --- youtube player */
 
@@ -34,27 +32,26 @@ function onYouTubeIframeAPIReady () {
   });
 }
 
-/* --- trance vibrator */
+/* --- devices */
 
 async function connectTrv () {
-  trv = new TranceVibrator();
+  const trv = new TranceVibrator();
   await trv.connect();
+  devices.push(trv);
   document.getElementById("trvStatus").innerHTML = "CONNECTED";
 }
 
-/* --- Joy-Con, Pro-Con */
-
 async function connectJoyCon () {
-  joyCon = new JoyCon();
+  const joyCon = new JoyCon();
   await joyCon.connect();
+  devices.push(joyCon);
   document.getElementById("joyConStatus").innerHTML = "CONNECTED";
 }
 
-/* --- built-in vibrator  */
-
 function enableVib () {
-  vib = new BuiltinVibrator();
+  const vib = new BuiltinVibrator();
   vib.connect();
+  devices.push(vib);
   document.getElementById("vibStatus").innerHTML = "ENABLED";
 }
 
@@ -190,16 +187,12 @@ function monitorPlayerStatus () {
     case 1:
       const time = player.getCurrentTime();
       const value = vibrationValue(time);
-      if (trv) trv.send(value);
-      if (joyCon) joyCon.send(value);
-      if (vib) vib.send(value);
+      devices.forEach(dev => dev.send(value));
       timeEl.innerHTML = time;
       document.body.style.setProperty("--vib1", value);
       break;
     default:
-      if (trv) trv.send(0);
-      if (joyCon) joyCon.send(0);
-      if (vib) vib.send(0);
+      devices.forEach(dev => dev.send(0));
       timeEl.innerHTML = "(paused)";
       document.body.style.setProperty("--vib1", 0);
   }
