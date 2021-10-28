@@ -13,7 +13,7 @@ class BuiltinVibrator {
 
   connect () {
     if (BuiltinVibrator.reserved) {
-      alert("Built-in vibrator is already connected.");
+      alert("Built-in vibrator is already enabled.");
       throw "Error";
     }
     BuiltinVibrator.reserved = true;

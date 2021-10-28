@@ -39,7 +39,7 @@ async function connectTrv (balance) {
   await trv.connect();
   if (balance) trv.setBalance(balance);
   devices.push(trv);
-  document.getElementById("trvStatus").innerHTML = "CONNECTED";
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 async function connectJoyCon (balance) {
@@ -47,13 +47,14 @@ async function connectJoyCon (balance) {
   await joyCon.connect();
   if (balance) joyCon.setBalance(balance);
   devices.push(joyCon);
-  document.getElementById("joyConStatus").innerHTML = "CONNECTED";
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 function enableVib () {
   const vib = new BuiltinVibrator();
   vib.connect();
   devices.push(vib);
+  document.getElementById("deviceCount").innerHTML = devices.length;
   document.getElementById("vibStatus").innerHTML = "ENABLED";
 }
 

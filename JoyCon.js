@@ -74,6 +74,10 @@ class JoyCon {
         { vendorId: 0x057e },
       ],
     });
+    if (devs[0].opened) {
+      alert("The device is already in use.");
+      throw "Error";
+    }
     this.joyCon = devs[0];
     await this.joyCon.open();
     await this.sendReport(0x01, JoyCon.defaultRumbleData, 0x48, 0x01); /* Enable rumble */

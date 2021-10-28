@@ -8,11 +8,16 @@ class TranceVibrator {
   }
 
   async connect () {
-    this.trv = await navigator.usb.requestDevice({
+    const trv = await navigator.usb.requestDevice({
       filters: [
         { vendorId: 0x0b49, productId: 0x064f },
       ],
     });
+    if (trv.opened) {
+      alert("The device is already in use.");
+      throw "Error";
+    }
+    this.trv = trv;
     await this.trv.open();
     await this.trv.selectConfiguration(1);
     await this.trv.claimInterface(0);

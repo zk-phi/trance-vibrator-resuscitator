@@ -14,10 +14,6 @@
     <h1>THE TRANCE VIBRATOR RESUSCITATOR (WIP)</h1>
     <p>Drive "ASCII Trance Vibrator" in sync with "Rez" music.</p>
     <p>Built with ♡ by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a>.</p>
-    <seciton>
-      <h2>LICENSE</h2>
-      <p>- <a target="_blank" href="https://github.com/aka256/joycon-webhid">joycon-webhid</a> (MIT License)</p>
-    </seciton>
     <section>
       <h2>NOTICES</h2>
       <p>This app is provided AS IS, without warranty of any kind.</p>
@@ -28,30 +24,24 @@
       <h2>STATUS</h2>
       <p>Please reload this page if the video does not load.</p>
       <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
+      <p>- CONNECTED DEVICES: <span id="deviceCount">0</span></p>
       <p>
-        - TRANCE_VIBRATOR_1:
-        <span id="trvStatus">
-          <button onclick="connectTrv();">CONNECT</button>
-          <button onclick="connectTrv([1, 0]);">MAIN only</button>
-          <button onclick="connectTrv([0, 1]);">SUB only</button>
-        </span>
-        (USB)
+        Add Trance Vibrator (via USB):
+        <button onclick="connectTrv();">ADD</button>
+        <button onclick="connectTrv([1, 0]);">ADD (MAIN only)</button>
+        <button onclick="connectTrv([0, 1]);">ADD (SUB only)</button>
       </p>
       <p>
-        - JOY_CON_1:
-        <span id="joyConStatus">
-          <button onclick="connectJoyCon();">CONNECT</button>
-          <button onclick="connectJoyCon([1, 0]);">MAIN only</button>
-          <button onclick="connectJoyCon([0, 1]);">SUB only</button>
-        </span>
-        (Bluetooth)
+        Add Joy-Con (via Bluetooth):
+        <button onclick="connectJoyCon();">ADD</button>
+        <button onclick="connectJoyCon([1, 0]);">ADD (MAIN only)</button>
+        <button onclick="connectJoyCon([0, 1]);">ADD (SUB only)</button>
       </p>
       <p>
-        - BUILTIN_VIBRATOR:
+        Enable built-in vibrator (for Android):
         <span id="vibStatus">
           <button onclick="enableVib();">ENABLE</button>
         </span>
-        (iOS unsupported)
       </p>
       <p>Press "PLAY" button when you're ready.</p>
       <button id="start" onclick="play();">PLAY</button>
