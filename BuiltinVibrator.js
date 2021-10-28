@@ -17,6 +17,8 @@ class BuiltinVibrator {
     }
     BuiltinVibrator.reserved = true;
     this.connected = true;
+    this.send(1.0, 1.0);
+    setTimeout(() => this.send(0, 0), 250);
   }
 
   send (value) {
