@@ -212,7 +212,7 @@ function monitorPlayerStatus () {
       sendTrv(0);
       sendVib(0);
       timeEl.innerHTML = "(paused)";
-      vibrationEl.style.width = `0`;
+      document.body.style.setProperty("--vib1", 0);
   }
 }
 
