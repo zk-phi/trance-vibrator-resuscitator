@@ -4,6 +4,7 @@ class TranceVibrator {
       alert("WebUSB unsupported on your browser");
       throw "Error";
     }
+    this.balance = [1.00, 0.75];
   }
 
   async connect () {
@@ -15,12 +16,17 @@ class TranceVibrator {
     await this.trv.open();
     await this.trv.selectConfiguration(1);
     await this.trv.claimInterface(0);
-    await this.send(0.5);
-    setTimeout(() => this.send(0), 250);
+    await this.send(0.5, 0.5);
+    setTimeout(() => this.send(0, 0), 250);
   }
 
-  async send (value) {
+  setBalance (value) {
+    this.balance = value;
+  }
+
+  async send (value1, value2) {
     if (this.trv) {
+      const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
       await this.trv.controlTransferOut({
         requestType: "vendor",
         recipient: "interface",

@@ -3,6 +3,7 @@
   --overlay: rgba(0, 0, 0, 0.8);
   --fg: rgb(255, 119, 0);
   --vib1: 0;
+  --vib2: 0;
 }
 
 body {
@@ -50,11 +51,18 @@ body {
   border: 1px solid var(--fg);
 }
 
-#vibration {
+.vibration {
   display: inline-block;
   height: 1em;
   background-color: var(--fg);
+}
+
+#vibration1 {
   width: calc(var(--vib1) * 100%);
+}
+
+#vibration2 {
+  width: calc(var(--vib2) * 100%);
 }
 
 a {

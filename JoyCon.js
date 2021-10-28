@@ -64,6 +64,7 @@ class JoyCon {
       throw "Error";
     }
     this.packetId = 0;
+    this.balance = [0.75, 0.50];
   }
 
   /* taken from event.ts::controlHID */
@@ -76,8 +77,12 @@ class JoyCon {
     this.joyCon = devs[0];
     await this.joyCon.open();
     await this.sendReport(0x01, JoyCon.defaultRumbleData, 0x48, 0x01); /* Enable rumble */
-    await this.send(0.5);
-    setTimeout(() => this.send(0), 250);
+    await this.send(0.5, 0.5);
+    setTimeout(() => this.send(0, 0), 250);
+  }
+
+  setBalance (value) {
+    this.balance = value;
   }
 
   async sendReport (reportId, rumbleData, subCommand = 0x00, ...args) {
@@ -90,7 +95,8 @@ class JoyCon {
     }
   }
 
-  async send (value) {
+  async send (value1, value2) {
+    const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
     this.sendReport(0x10, JoyCon.makeRumbleData(160, value, 80, value));
   }
 }

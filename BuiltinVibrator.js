@@ -6,6 +6,7 @@ class BuiltinVibrator {
       alert("Vibration API unsupported on your browser");
       throw "Error";
     }
+    this.balance = [1.0, 0.0];
     this.state = false;
     this.connected = false;
   }
@@ -21,7 +22,12 @@ class BuiltinVibrator {
     setTimeout(() => this.send(0, 0), 250);
   }
 
-  send (value) {
+  setBalance (value) {
+    this.balance = value;
+  }
+
+  send (value1, value2) {
+    const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
     const newState = value > 0.5 ? true : false;
     if (this.connected && this.state !== newState) {
       navigator.vibrate(newState ? 1000 : 0);

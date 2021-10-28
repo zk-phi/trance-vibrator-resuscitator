@@ -194,12 +194,23 @@ function fade (beg, end, time) {
   );
 }
 
-function vibrationValue (time) {
+function vibrationValue1 (time) {
   return Math.min(
     1.0,
-    fade( 0.35, 21.90, time) * (0.75 * track1a(time -  0.35) + 0.50 * track1b(time -  0.35)) +
-    fade(22.90, 37.95, time) * (0.75 * track2a(time - 22.40) + 0.50 * track2b(time - 22.40)) +
-    0.75 * track3a(time - 38.45) + 0.50 * track3b(time - 38.45) +
+    fade( 0.35, 21.90, time) * track1a(time -  0.35) +
+    fade(22.90, 37.95, time) * track2a(time - 22.40) +
+    track3a(time - 38.45) +
+    track4(time - 52.35) +
+    track5(time - 73.90)
+  );
+}
+
+function vibrationValue2 (time) {
+  return Math.min(
+    1.0,
+    fade( 0.35, 21.90, time) * track1b(time -  0.35) +
+    fade(22.90, 37.95, time) * track2b(time - 22.40) +
+    track3b(time - 38.45) +
     track4(time - 52.35) +
     track5(time - 73.90)
   );
@@ -212,15 +223,18 @@ function monitorPlayerStatus () {
   switch (player.getPlayerState()) {
     case 1:
       const time = player.getCurrentTime();
-      const value = vibrationValue(time);
-      devices.forEach(dev => dev.send(value));
+      const value1 = vibrationValue1(time);
+      const value2 = vibrationValue2(time);
+      devices.forEach(dev => dev.send(value1, value2));
       timeEl.innerHTML = time;
-      document.body.style.setProperty("--vib1", value);
+      document.body.style.setProperty("--vib1", value1);
+      document.body.style.setProperty("--vib2", value2);
       break;
     default:
       devices.forEach(dev => dev.send(0));
       timeEl.innerHTML = "(paused)";
       document.body.style.setProperty("--vib1", 0);
+      document.body.style.setProperty("--vib2", 0);
   }
 }
 
