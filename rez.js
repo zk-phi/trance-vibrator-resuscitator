@@ -1,5 +1,6 @@
 let player;
 let trv;
+let joyCon;
 
 /* --- youtube player */
 
@@ -62,6 +63,101 @@ async function connectTrv () {
   await sendTrv(128);
   setTimeout(function () { sendTrv(0); }, 250);
   document.getElementById("trvStatus").innerHTML = "CONNECTED";
+}
+
+/* --- Joy-Con, Pro-Con */
+
+/* some codes are taken from https://github.com/aka256/joycon-webhid under the MIT License */
+
+const DEFAULT_RUMBLE = [0x00, 0x01, 0x40, 0x40, 0x00, 0x01, 0x40, 0x40];
+let packetId = 0;
+
+async function joyConSendReport (reportId, rumbleData, subCommand = 0x00, ...args) {
+  if (joyCon) {
+    /* taken from output_report.ts::writeOutputReport */
+    await joyCon.sendReport(
+      reportId,
+      Uint8Array.from([packetId++].concat(rumbleData).concat([subCommand]).concat(args))
+    );
+  }
+}
+
+function makeJoyConRumbleData (highFreq, highAmp, lowFreq, lowAmp) {
+  /* taken from helper.ts::encodeHighFreq */
+  const clampedHighFreq = Math.max(41, Math.min(1253, highFreq));
+  const encodedHighFreq = (Math.round(Math.log2(clampedHighFreq / 10.0) * 32.0) - 0x60) * 4;
+
+  /* taken from helper.ts::encodeLowFreq */
+  const clampedLowFreq = Math.max(41, Math.min(1253, lowFreq))
+  const encodedLowFreq = Math.round(Math.log2(clampedLowFreq / 10.0) * 32.0) - 0x40;
+
+  /* taken from helper.ts::encodeHighAmpli */
+  const encodedHighAmp = 2 * (
+    0 < highAmp && highAmp < 0.012 ? (
+      1
+    ) : 0.012 <= highAmp && highAmp < 0.112 ? (
+      Math.round(4 * Math.log2(highAmp * 110))
+    ) : 0.112 <= highAmp && highAmp < 0.225 ? (
+      Math.round(16 * Math.log2(highAmp * 17))
+    ) : 0.225 <= highAmp && highAmp <= 1 ? (
+      Math.round(32 * Math.log2(highAmp * 8.7))
+    ) : (
+      0
+    )
+  );
+
+  /* taken from helper.ts::encodeLowAmpli */
+  const encodedLowAmp = 64 + Math.floor((
+    0 < lowAmp && lowAmp < 0.012 ? (
+      1
+    ) : 0.012 <= lowAmp && lowAmp < 0.112? (
+      Math.round(4 * Math.log2(lowAmp * 110))
+    ) : 0.112 <= lowAmp && lowAmp < 0.225 ? (
+      Math.round(16 * Math.log2(lowAmp * 17))
+    ) : 0.225 <= lowAmp && lowAmp <= 1 ? (
+      Math.round(32 * Math.log2(lowAmp * 8.7))
+    ) : (
+      0
+    )
+  ) / 2);
+
+  /* taken from event.ts::setRumble */
+  const data = [];
+  /* left */
+  data.push(encodedHighFreq & 0xff);
+  data.push(encodedHighAmp + ((encodedHighFreq >> 8) & 0xff));
+  data.push(encodedLowFreq + ((encodedLowAmp >> 8) & 0xff));
+  data.push(encodedLowAmp & 0xff);
+  /* right */
+  data.push(encodedHighFreq & 0xff);
+  data.push(encodedHighAmp + ((encodedHighFreq >> 8) & 0xff));
+  data.push(encodedLowFreq + ((encodedLowAmp >> 8) & 0xff));
+  data.push(encodedLowAmp & 0xff);
+
+  return data;
+}
+
+async function sendJoyCon (value) {
+  joyConSendReport(0x10, makeJoyConRumbleData(160, value, 80, value));
+}
+
+/* taken from event.ts::controlHID */
+async function connectJoyCon () {
+  if (!navigator.hid) {
+    alert("WebHID unsupported on your browser");
+    return;
+  }
+  const devs = await navigator.hid.requestDevice({
+    filters: [
+      { vendorId: 0x057e },
+    ],
+  });
+  joyCon = devs[0];
+  await joyCon.open();
+  await joyConSendReport(0x01, DEFAULT_RUMBLE, 0x48, 0x01); /* Enable rumble */
+  await sendJoyCon(0.5);
+  setTimeout(function () { sendJoyCon(0); }, 250);
+  document.getElementById("joyConStatus").innerHTML = "CONNECTED";
 }
 
 /* --- built-in vibrator  */
@@ -222,12 +318,14 @@ function monitorPlayerStatus () {
       const time = player.getCurrentTime();
       const value = vibrationValue(time);
       sendTrv(value);
+      sendJoyCon(value / 255);
       sendVib(value);
       timeEl.innerHTML = time;
       document.body.style.setProperty("--vib1", value / 255);
       break;
     default:
       sendTrv(0);
+      sendJoyCon(0);
       sendVib(0);
       timeEl.innerHTML = "(paused)";
       document.body.style.setProperty("--vib1", 0);
