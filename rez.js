@@ -34,16 +34,18 @@ function onYouTubeIframeAPIReady () {
 
 /* --- devices */
 
-async function connectTrv () {
+async function connectTrv (balance) {
   const trv = new TranceVibrator();
   await trv.connect();
+  if (balance) trv.setBalance(balance);
   devices.push(trv);
   document.getElementById("trvStatus").innerHTML = "CONNECTED";
 }
 
-async function connectJoyCon () {
+async function connectJoyCon (balance) {
   const joyCon = new JoyCon();
   await joyCon.connect();
+  if (balance) joyCon.setBalance(balance);
   devices.push(joyCon);
   document.getElementById("joyConStatus").innerHTML = "CONNECTED";
 }

@@ -28,9 +28,31 @@
       <h2>STATUS</h2>
       <p>Please reload this page if the video does not load.</p>
       <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
-      <p>- TRANCE_VIBRATOR_1: <span id="trvStatus"><button onclick="connectTrv();">CONNECT</button></span> (USB)</p>
-      <p>- JOY_CON_1: <span id="joyConStatus"><button onclick="connectJoyCon();">CONNECT</button></span> (Bluetooth)</p>
-      <p>- BUILTIN_VIBRATOR: <span id="vibStatus"><button onclick="enableVib();">ENABLE</button></span> (iOS unsupported)</p>
+      <p>
+        - TRANCE_VIBRATOR_1:
+        <span id="trvStatus">
+          <button onclick="connectTrv();">CONNECT</button>
+          <button onclick="connectTrv([1, 0]);">MAIN only</button>
+          <button onclick="connectTrv([0, 1]);">SUB only</button>
+        </span>
+        (USB)
+      </p>
+      <p>
+        - JOY_CON_1:
+        <span id="joyConStatus">
+          <button onclick="connectJoyCon();">CONNECT</button>
+          <button onclick="connectJoyCon([1, 0]);">MAIN only</button>
+          <button onclick="connectJoyCon([0, 1]);">SUB only</button>
+        </span>
+        (Bluetooth)
+      </p>
+      <p>
+        - BUILTIN_VIBRATOR:
+        <span id="vibStatus">
+          <button onclick="enableVib();">ENABLE</button>
+        </span>
+        (iOS unsupported)
+      </p>
       <p>Press "PLAY" button when you're ready.</p>
       <button id="start" onclick="play();">PLAY</button>
     </section>
@@ -38,8 +60,8 @@
 
   <div id="control" style="display: none">
     <div>TIME: <span id="time"></span></div>
-    <div>TRACK_1: <span id="vibrationContainer"><span class="vibration" id="vibration1"></span></span></div>
-    <div>TRACK_2: <span id="vibrationContainer"><span class="vibration" id="vibration2"></span></span></div>
+    <div>MAIN: <span id="vibrationContainer"><span class="vibration" id="vibration1"></span></span></div>
+    <div>SUB : <span id="vibrationContainer"><span class="vibration" id="vibration2"></span></span></div>
   </div>
 
   <script src="rez.js"></script>
