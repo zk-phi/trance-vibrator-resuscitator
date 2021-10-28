@@ -225,7 +225,7 @@ const track1b = withBPM(140, [
   0xbf, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 0xbf, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00,
 ]);
 
-const track2 = withBPM(142, [
+const track2a = withBPM(142, [
   /* base kick pattern: 0xff 0xbf 0x7f */
   /* 1                    2                       3                       4                   */
   0xff, 0xbf, 0x7f, 0x00, 0xff, 0xbf, 0x7f, 0x00, 0xff, 0xbf, 0x7f, 0x00, 0xff, 0xbf, 0x7f, 0x00,
@@ -301,8 +301,8 @@ function fade (beg, end, time) {
 function vibrationValue (time) {
   return Math.min(
     255,
-    fade( 0.30, 21.85, time) * (1.0 * track1a(time -  0.35) + 0.5 * track1b(time - 0.35)) +
-    fade(21.85, 37.90, time) * track2(time - 22.40) +
+    fade( 0.35, 21.90, time) * (1.0 * track1a(time -  0.35) + 0.5 * track1b(time - 0.35)) +
+    fade(22.90, 37.95, time) * track2a(time - 22.40) +
     track3(time - 38.45) +
     track4(time - 52.35) +
     track5(time - 73.90)
