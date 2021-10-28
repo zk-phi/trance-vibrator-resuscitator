@@ -22,10 +22,10 @@ body {
 
 #setup {
   position: absolute;
-  top: 10vh;
-  bottom: 10vh;
-  left: 10vw;
-  right: 10vw;
+  top: 5vh;
+  bottom: 5vh;
+  left: 5vw;
+  right: 5vw;
   border-left: 4px solid var(--fg);
   padding: 3vh 3vw;
   overflow: scroll;
