@@ -187,7 +187,6 @@ function vibrationValue (time) {
 /* --- entrypoint */
 
 const timeEl = document.getElementById("time");
-const vibrationEl = document.getElementById("vibration");
 function monitorPlayerStatus () {
   switch (player.getPlayerState()) {
     case 1:
@@ -196,7 +195,7 @@ function monitorPlayerStatus () {
       sendTrv(value);
       sendVib(value);
       timeEl.innerHTML = time;
-      vibrationEl.style.width = `${value/2.55}%`;
+      document.body.style.setProperty("--vib1", value / 255);
       break;
     default:
       sendTrv(0);

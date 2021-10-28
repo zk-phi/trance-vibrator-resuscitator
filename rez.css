@@ -2,9 +2,11 @@
   --bg: rgb(0, 0, 0);
   --overlay: rgba(0, 0, 0, 0.8);
   --fg: rgb(255, 119, 0);
+  --vib1: 0;
 }
 
-html {
+body {
+  margin: 0;
   background: var(--bg);
   color: var(--fg);
   font-family: 'Share Tech Mono', monospace;
@@ -52,6 +54,7 @@ html {
   display: inline-block;
   height: 1em;
   background-color: var(--fg);
+  width: calc(var(--vib1) * 100%);
 }
 
 a {
