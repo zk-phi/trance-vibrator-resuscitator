@@ -10,7 +10,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 #player {
