@@ -425,7 +425,7 @@ function vibrationValue2 (time) {
 
 function unmute () {
   if (!player) {
-    alert("Video is not loaded. Please reload this page if it does not load.");
+    alert("Video is not loaded. Please refresh this page if it does not load.");
     return;
   }
   player.unMute();
@@ -435,7 +435,7 @@ function unmute () {
 
 function play () {
   if (!player) {
-    alert("Video is not loaded. Please reload this page if it does not load.");
+    alert("Video is not loaded. Please refresh this page if it does not load.");
     return;
   }
   player.seekTo(0);
