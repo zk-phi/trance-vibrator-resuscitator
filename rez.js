@@ -411,7 +411,7 @@ function monitorPlayerStatus () {
       document.body.style.setProperty("--vib2", value2);
       break;
     default:
-      devices.forEach(dev => dev.send(0));
+      devices.forEach(dev => dev.send(0, 0));
       timeEl.innerHTML = "(paused)";
       document.body.style.setProperty("--vib1", 0);
       document.body.style.setProperty("--vib2", 0);
