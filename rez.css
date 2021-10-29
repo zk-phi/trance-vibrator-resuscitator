@@ -100,7 +100,7 @@ a:active, button:active {
   border-radius: 4px;
   background: var(--fg);
   animation: vib .01s linear infinite;
-  filter: brightness(calc(1 + var(--vib) * 0.4));
+  filter: brightness(calc(1 + var(--vib) * 0.2));
 }
 
 #ball1 {
