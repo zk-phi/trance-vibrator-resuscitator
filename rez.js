@@ -56,7 +56,6 @@ function enableVib (balance) {
   if (balance) vib.setBalance(balance);
   devices.push(vib);
   document.getElementById("deviceCount").innerHTML = devices.length;
-  document.getElementById("vibStatus").innerHTML = "ENABLED";
 }
 
 function enableAudio (balance) {
@@ -65,7 +64,6 @@ function enableAudio (balance) {
   if (balance) audio.setBalance(balance);
   devices.push(audio);
   document.getElementById("deviceCount").innerHTML = devices.length;
-  document.getElementById("audioStatus").innerHTML = "ENABLED";
 }
 
 /* --- songs */
