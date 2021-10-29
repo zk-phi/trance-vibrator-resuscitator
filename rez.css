@@ -69,7 +69,7 @@ a {
   color: var(--fg);
 }
 
-button {
+button, select {
   cursor: pointer;
   color: var(--fg);
   border: 1px solid var(--fg);
@@ -78,10 +78,11 @@ button {
   font-family: inherit;
 }
 
-a:hover, button:hover {
+a:hover, button:hover, select:hover, select:focus {
   color: var(--bg);
   background: var(--fg);
   box-shadow: 0 0 15px var(--fg);
+  outline: none;
 }
 
 a:active, button:active {

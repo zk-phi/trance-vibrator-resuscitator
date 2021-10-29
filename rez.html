@@ -4,6 +4,7 @@
   <script src="./JoyCon.js"></script>
   <script src="./TranceVibrator.js"></script>
   <script src="./BuiltinVibrator.js"></script>
+  <script src="./DebugAudio.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono" rel="stylesheet">
   <link href="rez.css" rel="stylesheet">
 </head>
@@ -12,13 +13,12 @@
 
   <div id="setup">
     <h1>THE TRANCE VIBRATOR RESUSCITATOR (WIP)</h1>
-    <p>Drive "ASCII Trance Vibrator" in sync with "Rez" music.</p>
+    <p>Orchestrate "Trance Vibrator" (and other vibrators) in sync with "Rez" music.</p>
     <p>Built with ♡ by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a>.</p>
     <section>
       <h2>NOTICES</h2>
-      <p>This app is provided AS IS, without warranty of any kind.</p>
+      <p>This app is provided AS IS, without warranty of any kind. Use at your own risk.</p>
       <p>Latest Blink-powered browser (including Chrome, Opera, Edge) required.</p>
-      <p>Headphones heavily recommended.</p>
     </section>
     <section>
       <h2>STATUS</h2>
@@ -26,22 +26,18 @@
       <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
       <p>- CONNECTED DEVICES: <span id="deviceCount">0</span></p>
       <p>
-        Trance Vibrator (USB)
-        <button onclick="connectTrv();">+ ADD</button>
-        <button onclick="connectTrv([1, 0]);">+ ADD (MAIN only)</button>
-        <button onclick="connectTrv([0, 1]);">+ ADD (SUB only)</button>
-      </p>
-      <p>
-        Joy-Con (Bluetooth)
-        <button onclick="connectJoyCon();">+ ADD</button>
-        <button onclick="connectJoyCon([1, 0]);">+ ADD (MAIN only)</button>
-        <button onclick="connectJoyCon([0, 1]);">+ ADD (SUB only)</button>
-      </p>
-      <p>
-        Built-in vibrator (Android)
-        <span id="vibStatus">
-          <button onclick="enableVib();">ENABLE</button>
-        </span>
+        <select id="device">
+          <option value="tranceVibrator">DEVICE: Trance Vibrator (USB)</option>
+          <option value="joyCon">DEVICE: Joy-Con (Bluetooth)</option>
+          <option value="builtin">DEVICE: Built-in vibrator (Android)</option>
+          <option value="audio">DEVICE: Audio feedback (for debug)</option>
+        </select>
+        <select id="balance">
+          <option value="default">PATTERN: Default</option>
+          <option value="main">PATTERN: MAIN track only</option>
+          <option value="sub">PATTERN: SUB track only</option>
+        </select>
+        <button onclick="connect()">+ CONNECT</button>
       </p>
       <p>Press "PLAY" button when you're ready.</p>
       <button id="start" onclick="play();">PLAY</button>

@@ -50,12 +50,22 @@ async function connectJoyCon (balance) {
   document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
-function enableVib () {
+function enableVib (balance) {
   const vib = new BuiltinVibrator();
   vib.connect();
+  if (balance) vib.setBalance(balance);
   devices.push(vib);
   document.getElementById("deviceCount").innerHTML = devices.length;
   document.getElementById("vibStatus").innerHTML = "ENABLED";
+}
+
+function enableAudio (balance) {
+  const audio = new DebugAudio();
+  audio.connect();
+  if (balance) audio.setBalance(balance);
+  devices.push(audio);
+  document.getElementById("deviceCount").innerHTML = devices.length;
+  document.getElementById("audioStatus").innerHTML = "ENABLED";
 }
 
 /* --- songs */
@@ -429,4 +439,19 @@ function play () {
   setInterval(monitorPlayerStatus, 30);
   document.getElementById("setup").remove();
   document.getElementById("control").style.display = "block";
+}
+
+function connect () {
+  const fns = {
+    tranceVibrator: connectTrv,
+    joyCon: connectJoyCon,
+    builtin: enableVib,
+    audio: enableAudio,
+  };
+  const args = {
+    default: undefined,
+    main: [1, 0],
+    sub: [0, 1],
+  };
+  (fns[document.getElementById("device").value])(args[document.getElementById("balance").value]);
 }
