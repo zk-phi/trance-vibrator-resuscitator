@@ -68,7 +68,7 @@ class JoyCon {
       throw "Error";
     }
     this.packetId = 0;
-    this.balance = [0.75, 0.50];
+    this.balance = [[0, 1], [1, 0]];
     this.freq = [320, 160];
   }
 
@@ -91,7 +91,7 @@ class JoyCon {
   }
 
   setBalance (value) {
-    this.balance = value;
+    this.balance = [value, value];
   }
 
   setFreq (value) {
@@ -109,8 +109,9 @@ class JoyCon {
   }
 
   async send (value1, value2) {
-    const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
-    this.sendReport(0x01, JoyCon.defaultRumbleData, 0x30, JoyCon.makeLEDData(value));
-    this.sendReport(0x10, JoyCon.makeRumbleData(this.freq[0], value, this.freq[1], value));
+    const ha = Math.min(1, this.balance[0][0] * value1 + this.balance[0][1] * value2);
+    const la = Math.min(1, this.balance[1][0] * value1 + this.balance[1][1] * value2);
+    this.sendReport(0x01, JoyCon.defaultRumbleData, 0x30, JoyCon.makeLEDData((ha + la) / 2));
+    this.sendReport(0x10, JoyCon.makeRumbleData(this.freq[0], ha, this.freq[1], la));
   }
 }
