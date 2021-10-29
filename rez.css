@@ -11,6 +11,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
 }
 
 #player {
@@ -40,11 +41,13 @@ body {
   left: 16px;
   padding: 16px;
   background: var(--overlay);
+  line-height: 2;
   z-index: 2;
 }
 
 #vibrationContainer {
   display: inline-block;
+  vertical-align: middle;
   height: 1em;
   width: 180px;
   padding: 0;
@@ -87,4 +90,34 @@ a:hover, button:hover, select:hover, select:focus {
 
 a:active, button:active {
   opacity: 0.9;
+}
+
+.ball {
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: var(--fg);
+  animation: vib .01s linear infinite;
+}
+
+#ball1 {
+  --vib: var(--vib1);
+}
+
+#ball2 {
+  --vib: var(--vib2);
+  opacity: 0.7;
+}
+
+@keyframes vib {
+  0% {
+    margin-left: calc(var(--vib) * 4px);
+    margin-right: calc(var(--vib) * -4px);
+  }
+  50% {
+    margin-left: calc(var(--vib) * -4px);
+    margin-right: calc(var(--vib) * 4px);
+  }
 }

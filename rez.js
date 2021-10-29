@@ -1,5 +1,6 @@
 let player;
 let devices = [];
+let currentValue = [0, 0];
 
 /* --- youtube player */
 
@@ -9,6 +10,25 @@ let devices = [];
   script.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(script);
 })();
+
+const timeEl = document.getElementById("time");
+function monitorPlayerStatus () {
+  switch (player.getPlayerState()) {
+    case 1:
+      const time = player.getCurrentTime();
+      currentValue = [vibrationValue1(time), vibrationValue2(time)];
+      timeEl.innerHTML = time;
+      document.body.style.setProperty("--vib1", currentValue[0]);
+      document.body.style.setProperty("--vib2", currentValue[1]);
+      break;
+    default:
+      currentValue = [0, 0];
+      timeEl.innerHTML = "(paused)";
+      document.body.style.setProperty("--vib1", 0);
+      document.body.style.setProperty("--vib2", 0);
+  }
+  requestAnimationFrame(monitorPlayerStatus);
+}
 
 /* this function is called automatically when the iframe_api is ready */
 function onYouTubeIframeAPIReady () {
@@ -27,6 +47,7 @@ function onYouTubeIframeAPIReady () {
         player.setLoop(true);
         player.seekTo(6);
         player.playVideo();
+        monitorPlayerStatus();
       },
     },
   });
@@ -39,7 +60,6 @@ async function connectTrv (balance) {
   await trv.connect();
   if (balance) trv.setBalance(balance);
   devices.push(trv);
-  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 async function connectJoyCon (balance) {
@@ -47,7 +67,6 @@ async function connectJoyCon (balance) {
   await joyCon.connect();
   if (balance) joyCon.setBalance(balance);
   devices.push(joyCon);
-  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 function enableVib (balance) {
@@ -55,7 +74,6 @@ function enableVib (balance) {
   vib.connect();
   if (balance) vib.setBalance(balance);
   devices.push(vib);
-  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 function enableAudio (balance) {
@@ -63,7 +81,6 @@ function enableAudio (balance) {
   audio.connect();
   if (balance) audio.setBalance(balance);
   devices.push(audio);
-  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 /* --- songs */
@@ -406,26 +423,6 @@ function vibrationValue2 (time) {
 
 /* --- entrypoint */
 
-const timeEl = document.getElementById("time");
-function monitorPlayerStatus () {
-  switch (player.getPlayerState()) {
-    case 1:
-      const time = player.getCurrentTime();
-      const value1 = vibrationValue1(time);
-      const value2 = vibrationValue2(time);
-      devices.forEach(dev => dev.send(value1, value2));
-      timeEl.innerHTML = time;
-      document.body.style.setProperty("--vib1", value1);
-      document.body.style.setProperty("--vib2", value2);
-      break;
-    default:
-      devices.forEach(dev => dev.send(0, 0));
-      timeEl.innerHTML = "(paused)";
-      document.body.style.setProperty("--vib1", 0);
-      document.body.style.setProperty("--vib2", 0);
-  }
-}
-
 function play () {
   if (!player) {
     alert("Video is not loaded. Please reload this page if it does not load.");
@@ -434,22 +431,23 @@ function play () {
   player.seekTo(0);
   player.unMute();
   player.setVolume(100);
-  setInterval(monitorPlayerStatus, 30);
+  setInterval(() => devices.forEach(dev => dev.send(currentValue[0], currentValue[1])), 30);
   document.getElementById("setup").remove();
   document.getElementById("monitor").style.display = "block";
 }
 
 function connect () {
-  const fns = {
+  const fn = {
     tranceVibrator: connectTrv,
     joyCon: connectJoyCon,
     builtin: enableVib,
     audio: enableAudio,
-  };
-  const args = {
+  }[document.getElementById("device").value];
+  const arg = {
     default: undefined,
     main: [1, 0],
     sub: [0, 1],
-  };
-  (fns[document.getElementById("device").value])(args[document.getElementById("balance").value]);
+  }[document.getElementById("balance").value];
+  fn(arg);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }

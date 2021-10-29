@@ -13,6 +13,7 @@
 
   <div id="setup">
     <h1>THE TRANCE VIBRATOR RESUSCITATOR (WIP)</h1>
+    <div class="ball" id="ball1"></div> <div class="ball" id="ball2"></div>
     <p>Orchestrate "Trance Vibrator" (and other vibrators) in sync with "Rez" music.</p>
     <p>Built with ♡ by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a>.</p>
     <section>
@@ -45,9 +46,17 @@
   </div>
 
   <div id="monitor" style="display: none">
-    <div>TIME: <span id="time"></span></div>
-    <div>MAIN: <span id="vibrationContainer"><span class="vibration" id="vibration1"></span></span></div>
-    <div>SUB : <span id="vibrationContainer"><span class="vibration" id="vibration2"></span></span></div>
+    <div>
+      TIME: <span id="time"></span>
+    </div>
+    <div>
+      MAIN: <span id="vibrationContainer"><span class="vibration" id="vibration1"></span></span>
+      <div class="ball" id="ball1"></div>
+    </div>
+    <div>
+      SUB : <span id="vibrationContainer"><span class="vibration" id="vibration2"></span></span>
+      <div class="ball" id="ball2"></div>
+    </div>
   </div>
 
   <script src="rez.js"></script>
