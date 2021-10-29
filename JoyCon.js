@@ -58,6 +58,10 @@ class JoyCon {
     return data;
   }
 
+  static makeLEDData (value) {
+    return value > 0.75 ? 15 : value > 0.5 ? 14 : value > 0.25 ? 12 : value > 0 ? 8 : 0;
+  }
+
   constructor () {
     if (!navigator.hid) {
       alert("WebHID unsupported on your browser");
@@ -106,6 +110,7 @@ class JoyCon {
 
   async send (value1, value2) {
     const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
+    this.sendReport(0x01, JoyCon.defaultRumbleData, 0x30, JoyCon.makeLEDData(value));
     this.sendReport(0x10, JoyCon.makeRumbleData(this.freq[0], value, this.freq[1], value));
   }
 }
