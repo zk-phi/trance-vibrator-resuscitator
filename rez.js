@@ -438,7 +438,7 @@ function play () {
   player.setVolume(100);
   setInterval(monitorPlayerStatus, 30);
   document.getElementById("setup").remove();
-  document.getElementById("control").style.display = "block";
+  document.getElementById("monitor").style.display = "block";
 }
 
 function connect () {
