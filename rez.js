@@ -399,8 +399,8 @@ function vibrationValue1 (time) {
     track5a(time -  73.90) +
     fade(114.05, 127.45, time) * track6a(time - 114.05) +
     fade(128.45, 153.50, time) * track7a(time - 128.45) +
-    fade(154.50, 170.00, time) * track8a(time - 154.00) +
-    track9a(time - 171.40) +
+    fade(154.50, 169.97, time) * track8a(time - 154.00) +
+    track9a(time - 171.37) +
     fade(192.00, 208.00, time) * track10a(time - 191.00)
   );
 }
@@ -415,8 +415,8 @@ function vibrationValue2 (time) {
     track5b(time -  73.90) +
     fade(114.05, 127.45, time) * track6b(time - 114.05) +
     fade(128.45, 153.50, time) * track7b(time - 128.45) +
-    fade(154.50, 170.00, time) * track8b(time - 154.00) +
-    track9b(time - 171.40) +
+    fade(154.50, 169.97, time) * track8b(time - 154.00) +
+    track9b(time - 171.37) +
     fade(192.00, 208.00, time) * track10b(time - 191.00)
   );
 }
