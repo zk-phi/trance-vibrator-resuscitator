@@ -65,6 +65,7 @@ class JoyCon {
     }
     this.packetId = 0;
     this.balance = [0.75, 0.50];
+    this.freq = [320, 160];
   }
 
   /* taken from event.ts::controlHID */
@@ -89,6 +90,10 @@ class JoyCon {
     this.balance = value;
   }
 
+  setFreq (value) {
+    this.freq = value;
+  }
+
   async sendReport (reportId, rumbleData, subCommand = 0x00, ...args) {
     if (this.joyCon) {
       /* taken from output_report.ts::writeOutputReport */
@@ -101,6 +106,6 @@ class JoyCon {
 
   async send (value1, value2) {
     const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
-    this.sendReport(0x10, JoyCon.makeRumbleData(160, value, 80, value));
+    this.sendReport(0x10, JoyCon.makeRumbleData(this.freq[0], value, this.freq[1], value));
   }
 }
