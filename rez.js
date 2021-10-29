@@ -423,6 +423,16 @@ function vibrationValue2 (time) {
 
 /* --- entrypoint */
 
+function unmute () {
+  if (!player) {
+    alert("Video not loaded. Try reloading.");
+    return;
+  }
+  player.unMute();
+  player.setVolume(100);
+  document.getElementById("unmute").remove();
+}
+
 function play () {
   if (!player) {
     alert("Video is not loaded. Please reload this page if it does not load.");
