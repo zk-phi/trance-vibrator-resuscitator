@@ -71,6 +71,14 @@ async function connectJoyCon (balance) {
   document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
+async function connectPad (balance) {
+  const pad = new Pad();
+  await pad.connect();
+  if (balance) pad.setBalance(balance);
+  devices.push(pad);
+  document.getElementById("deviceCount").innerHTML = devices.length;
+}
+
 function enableVib (balance) {
   const vib = new BuiltinVibrator();
   vib.connect();
@@ -454,6 +462,7 @@ function connect () {
   const fn = {
     tranceVibrator: connectTrv,
     joyCon: connectJoyCon,
+    pad: connectPad,
     builtin: enableVib,
     audio: enableAudio,
   }[document.getElementById("device").value];
