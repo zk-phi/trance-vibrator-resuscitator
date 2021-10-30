@@ -60,6 +60,7 @@ async function connectTrv (balance) {
   await trv.connect();
   if (balance) trv.setBalance(balance);
   devices.push(trv);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 async function connectJoyCon (balance) {
@@ -67,6 +68,7 @@ async function connectJoyCon (balance) {
   await joyCon.connect();
   if (balance) joyCon.setBalance(balance);
   devices.push(joyCon);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 function enableVib (balance) {
@@ -74,6 +76,7 @@ function enableVib (balance) {
   vib.connect();
   if (balance) vib.setBalance(balance);
   devices.push(vib);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 function enableAudio (balance) {
@@ -81,6 +84,7 @@ function enableAudio (balance) {
   audio.connect();
   if (balance) audio.setBalance(balance);
   devices.push(audio);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
 
 /* --- songs */
@@ -459,5 +463,4 @@ function connect () {
     sub: [0, 1],
   }[document.getElementById("balance").value];
   fn(arg);
-  document.getElementById("deviceCount").innerHTML = devices.length;
 }
