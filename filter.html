@@ -1,0 +1,32 @@
+<head>
+  <script src="./JoyCon.js"></script>
+  <script src="./Chart.js"></script>
+</head>
+<body>
+  <h2>音声ソース</h2>
+  <section id="audioDevice">
+    <p>
+      どの音声ソースに連動させるかを選んでください。
+    </p>
+    <button onclick="initCapture();">別タブの音をキャプチャ</button>
+    <button onclick="enumerateDevices();">デバイスから選ぶ</button>
+  </section>
+
+  <h2>Vibrator</h2>
+  <section>
+    <button onclick="connectVib();">接続</button>
+  </section>
+
+  <section>
+    Value: <small id="value">-</small>
+  </section>
+
+  <section>
+    Value: <small id="value2">-</small>
+  </section>
+
+  <per id="spectrum">
+  </per>
+
+  <script src="filter.js"></script>
+</body>
