@@ -53,48 +53,6 @@ function onYouTubeIframeAPIReady () {
   });
 }
 
-/* --- devices */
-
-async function connectTrv (balance) {
-  const trv = new TranceVibrator();
-  await trv.connect();
-  if (balance) trv.setBalance(balance);
-  devices.push(trv);
-  document.getElementById("deviceCount").innerHTML = devices.length;
-}
-
-async function connectJoyCon (balance) {
-  const joyCon = new JoyCon();
-  await joyCon.connect();
-  if (balance) joyCon.setBalance(balance);
-  devices.push(joyCon);
-  document.getElementById("deviceCount").innerHTML = devices.length;
-}
-
-async function connectPad (balance) {
-  const pad = new Pad();
-  await pad.connect();
-  if (balance) pad.setBalance(balance);
-  devices.push(pad);
-  document.getElementById("deviceCount").innerHTML = devices.length;
-}
-
-function enableVib (balance) {
-  const vib = new BuiltinVibrator();
-  vib.connect();
-  if (balance) vib.setBalance(balance);
-  devices.push(vib);
-  document.getElementById("deviceCount").innerHTML = devices.length;
-}
-
-function enableAudio (balance) {
-  const audio = new DebugAudio();
-  audio.connect();
-  if (balance) audio.setBalance(balance);
-  devices.push(audio);
-  document.getElementById("deviceCount").innerHTML = devices.length;
-}
-
 /* --- songs */
 
 function withBPM (bpm, arr) {
@@ -458,18 +416,22 @@ function play () {
   document.getElementById("monitor").style.display = "block";
 }
 
-function connect () {
-  const fn = {
-    tranceVibrator: connectTrv,
-    joyCon: connectJoyCon,
-    pad: connectPad,
-    builtin: enableVib,
-    audio: enableAudio,
+async function connect () {
+  const Class = {
+    tranceVibrator: TranceVibrator,
+    joyCon: JoyCon,
+    pad: Pad,
+    builtin: BuiltinVibrator,
+    audio: DebugAudio,
   }[document.getElementById("device").value];
-  const arg = {
+  const balance = {
     default: undefined,
     main: [1, 0],
     sub: [0, 1],
   }[document.getElementById("balance").value];
-  fn(arg);
+  const dev = new Class();
+  await dev.connect();
+  if (balance) dev.setBalance(balance);
+  devices.push(dev);
+  document.getElementById("deviceCount").innerHTML = devices.length;
 }
