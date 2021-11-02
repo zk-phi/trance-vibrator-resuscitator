@@ -7,7 +7,7 @@ class BuiltinVibrator {
       throw "Error";
     }
     this.balance = [1.0, 0.0];
-    this.state = false;
+    this.vibrationState = false;
     this.connected = false;
   }
 
@@ -29,9 +29,9 @@ class BuiltinVibrator {
   send (value1, value2) {
     const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
     const newState = value > 0.5 ? true : false;
-    if (this.connected && this.state !== newState) {
+    if (this.connected && this.vibrationState !== newState) {
       navigator.vibrate(newState ? 1000 : 0);
-      this.state = newState;
+      this.vibrationState = newState;
     }
   }
 }
