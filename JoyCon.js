@@ -3,15 +3,16 @@
 class JoyCon {
   static defaultRumbleData = [0x00, 0x01, 0x40, 0x40, 0x00, 0x01, 0x40, 0x40];
 
-  static makeRumbleData (highFreq, highAmp, lowFreq, lowAmp) {
-    /* taken from helper.ts::encodeHighFreq */
+    /* taken from helper.ts::encodeHighFreq, encodeLowFreq */
+  static encodeFreq (highFreq, lowFreq) {
     const clampedHighFreq = Math.max(41, Math.min(1253, highFreq));
     const encodedHighFreq = (Math.round(Math.log2(clampedHighFreq / 10.0) * 32.0) - 0x60) * 4;
-
-    /* taken from helper.ts::encodeLowFreq */
     const clampedLowFreq = Math.max(41, Math.min(1253, lowFreq))
     const encodedLowFreq = Math.round(Math.log2(clampedLowFreq / 10.0) * 32.0) - 0x40;
+    return [encodedHighFreq, encodedLowFreq];
+  }
 
+  static makeRumbleData (highAmp, lowAmp) {
     /* taken from helper.ts::encodeHighAmpli */
     const encodedHighAmp = 2 * (
       0 < highAmp && highAmp < 0.012 ? (
@@ -45,14 +46,14 @@ class JoyCon {
     /* taken from event.ts::setRumble */
     const data = [];
     /* left */
-    data.push(encodedHighFreq & 0xff);
-    data.push(encodedHighAmp + ((encodedHighFreq >> 8) & 0xff));
-    data.push(encodedLowFreq + ((encodedLowAmp >> 8) & 0xff));
+    data.push(this.encodedFreq[0] & 0xff);
+    data.push(encodedHighAmp + ((this.encodedFreq[0] >> 8) & 0xff));
+    data.push(this.encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
     data.push(encodedLowAmp & 0xff);
     /* right */
-    data.push(encodedHighFreq & 0xff);
-    data.push(encodedHighAmp + ((encodedHighFreq >> 8) & 0xff));
-    data.push(encodedLowFreq + ((encodedLowAmp >> 8) & 0xff));
+    data.push(this.encodedFreq[0] & 0xff);
+    data.push(encodedHighAmp + ((this.encodedFreq[0] >> 8) & 0xff));
+    data.push(this.encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
     data.push(encodedLowAmp & 0xff);
 
     return data;
@@ -69,7 +70,7 @@ class JoyCon {
     }
     this.packetId = 0;
     this.balance = [[0, 1], [1, 0]];
-    this.freq = [320, 160];
+    this.encodedFreq = JoyCon.encodeFreq(320, 160);
   }
 
   /* taken from event.ts::controlHID */
@@ -94,8 +95,8 @@ class JoyCon {
     this.balance = [value, value];
   }
 
-  setFreq (value) {
-    this.freq = value;
+  setFreq (hf, lf) {
+    this.encodedFreq = JoyCon.encodeFreq(hf, lf);
   }
 
   async sendReport (reportId, rumbleData, subCommand = 0x00, ...args) {
@@ -112,6 +113,6 @@ class JoyCon {
     const ha = Math.min(1, this.balance[0][0] * value1 + this.balance[0][1] * value2);
     const la = Math.min(1, this.balance[1][0] * value1 + this.balance[1][1] * value2);
     this.sendReport(0x01, JoyCon.defaultRumbleData, 0x30, JoyCon.makeLEDData((ha + la) / 2));
-    this.sendReport(0x10, JoyCon.makeRumbleData(this.freq[0], ha, this.freq[1], la));
+    this.sendReport(0x10, JoyCon.makeRumbleData(ha, la));
   }
 }
