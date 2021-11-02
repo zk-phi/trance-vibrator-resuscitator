@@ -30,8 +30,9 @@ class Pad {
     }
     if (pads.length === 0) {
       alert(
-        "No gamepads with vibration support found.\n" +
-        "Make sure that the pad is connected, then push any button and retry.");
+        "No gamepads with vibration support detected.\n" +
+        "Make sure that the pad is connected, then push any button and retry."
+      );
       throw "Error";
     }
     const ix = Pad.promptNumber(
