@@ -6,6 +6,7 @@ class DebugAudio {
       alert("WebAudio unsupported on your browser");
       throw "Error";
     }
+    this.balance = [0.75, 0.50];
     this.connected = false;
   }
 
@@ -21,7 +22,6 @@ class DebugAudio {
     osc.connect(gain).connect(ctx.destination);
     osc.type = "square";
     osc.start();
-    this.balance = [0.75, 0.50];
     this.osc = osc;
     this.gain = gain;
     this.connected = true;
