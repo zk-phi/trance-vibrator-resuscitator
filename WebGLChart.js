@@ -53,10 +53,8 @@ class Chart {
     this.el.height = options.height;
     this.max = options.max;
     this.min = options.min;
-    this.ctx = this.el.getContext("webgl2");
+    this.ctx = this.el.getContext("webgl2", { preserveDrawingBuffer: true });
     this.ctx.getExtension("OES_standard_derivatives");
-    this.ctx.activeTexture(this.ctx.TEXTURE0);
-    this.texture = this.makeTexture();
     this.ctx.initialized = false;
   }
 
@@ -65,6 +63,10 @@ class Chart {
     const fs = await fetch("./fragment.glsl", { cache: "no-cache" });
     const prog = this.buildProgram(await vs.text(), await fs.text());
     this.bindTrivialVertices(prog, "pos");
+    const audioLoc = this.ctx.getUniformLocation(prog, "audio");
+    this.ctx.uniform1i(audioLoc, 0);
+    this.ctx.activeTexture(this.ctx.TEXTURE0);
+    this.makeTexture();
     const resolutionLoc = this.ctx.getUniformLocation(prog, "resolution");
     this.ctx.uniform2f(resolutionLoc, this.el.width, this.el.height)
     this.initialized = true;
