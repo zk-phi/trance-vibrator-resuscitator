@@ -53,10 +53,7 @@ async function streamInit (stream) {
     fftSize: FFT_SIZE,
   });
   const dest = new MediaStreamAudioDestinationNode(ctx);
-  source.connect(lpfNode);
-  lpfNode.connect(gainNode);
-  gainNode.connect(analyserNode);
-  analyserNode.connect(dest);
+  source.connect(lpfNode).connect(gainNode).connect(analyserNode).connect(dest);
   monitorAudio();
   renderLevel();
   sendVib();
