@@ -1,4 +1,4 @@
-const FFT_SIZE = 8192;
+const FFT_SIZE = 1024;
 const EXPONENT = 8;
 
 /* vo をあえて避けるなら -90 と 5000- くらいでいいかも */
@@ -76,10 +76,13 @@ const chart = new Chart({
 document.body.appendChild(chart.el);
 function monitorAudio () {
   analyserNode.getFloatTimeDomainData(buf);
-  const max = Math.min(1, Math.max(...buf));
-  const min = Math.max(-1, Math.min(...buf));
-  value = (max - min) / 2;
-  chart.render(buf, max, min);
+  const newValue = Math.min(1, (Math.max(...buf) - Math.min(...buf)) / 2);
+  if (newValue > value) {
+    value = newValue;
+  } else {
+    value = 0.9 * value + 0.1 * newValue;
+  }
+  chart.render(buf, value, -value);
   setTimeout(monitorAudio, 30);
 }
 
