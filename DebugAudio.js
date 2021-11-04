@@ -6,7 +6,7 @@ class DebugAudio {
       alert("WebAudio unsupported on your browser");
       throw "Error";
     }
-    this.balance = [0.75, 0.50];
+    this.balance = [[0, 1], [1, 0]];
     this.connected = false;
   }
 
@@ -16,29 +16,47 @@ class DebugAudio {
       throw "Error";
     }
     const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    gain.gain.value = 0;
-    osc.connect(gain).connect(ctx.destination);
-    osc.type = "square";
-    osc.start();
-    this.osc = osc;
-    this.gain = gain;
-    this.connected = true;
+    const oscL = new OscillatorNode(ctx, {
+      type: "square",
+    });
+    const oscR = new OscillatorNode(ctx, {
+      type: "square",
+    });
+    const panL = new StereoPannerNode(ctx, {
+      pan: -1,
+    });
+    const panR = new StereoPannerNode(ctx, {
+      pan: 1,
+    });
+    const gainL = new GainNode(ctx, {
+      gain: 0,
+    });
+    const gainR = new GainNode(ctx, {
+      gain: 0,
+    });
+    oscL.connect(panL).connect(gainL).connect(ctx.destination);
+    oscR.connect(panR).connect(gainR).connect(ctx.destination);
+    oscL.start();
+    oscR.start();
+    this.osc = [oscL, oscR];
+    this.gain = [gainL, gainR];
     DebugAudio.enabled = true;
     this.send(1.0, 1.0);
     setTimeout(() => this.send(0, 0), 250);
   }
 
   setBalance (value) {
-    this.balance = value;
+    this.balance = [value, value];
   }
 
   send (value1, value2) {
-    if (this.connected) {
-      const value = Math.min(1, this.balance[0] * value1 + this.balance[1] * value2);
-      this.gain.gain.value = value * 0.3;
-      this.osc.frequency.value = 110 + (110 * value * 0.25);
+    if (this.osc) {
+      const valueL = Math.min(1, this.balance[1][0] * value1 + this.balance[1][1] * value2);
+      const valueR = Math.min(1, this.balance[0][0] * value1 + this.balance[0][1] * value2);
+      this.gain[0].gain.value = valueL * 0.3;
+      this.osc[0].frequency.value = 100 + (100 * valueL * 0.15);
+      this.gain[1].gain.value = valueR * 0.3;
+      this.osc[1].frequency.value = 200 + (200 * valueR * 0.15);
     }
   }
 }
