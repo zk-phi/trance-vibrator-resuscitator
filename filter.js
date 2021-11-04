@@ -70,6 +70,7 @@ const chart = new Chart({
   strokeStyle: "orange",
   lineWidth: 4,
 });
+chart.initialize();
 document.body.appendChild(chart.el);
 function monitorAudio () {
   analyserNode.getFloatTimeDomainData(buf);
