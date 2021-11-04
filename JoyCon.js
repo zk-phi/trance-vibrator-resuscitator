@@ -12,7 +12,7 @@ class JoyCon {
     return [encodedHighFreq, encodedLowFreq];
   }
 
-  static makeRumbleData (highAmp, lowAmp) {
+  static makeRumbleData (encodedFreq, highAmp, lowAmp) {
     /* taken from helper.ts::encodeHighAmpli */
     const encodedHighAmp = 2 * (
       0 < highAmp && highAmp < 0.012 ? (
@@ -46,14 +46,14 @@ class JoyCon {
     /* taken from event.ts::setRumble */
     const data = [];
     /* left */
-    data.push(this.encodedFreq[0] & 0xff);
-    data.push(encodedHighAmp + ((this.encodedFreq[0] >> 8) & 0xff));
-    data.push(this.encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
+    data.push(encodedFreq[0] & 0xff);
+    data.push(encodedHighAmp + ((encodedFreq[0] >> 8) & 0xff));
+    data.push(encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
     data.push(encodedLowAmp & 0xff);
     /* right */
-    data.push(this.encodedFreq[0] & 0xff);
-    data.push(encodedHighAmp + ((this.encodedFreq[0] >> 8) & 0xff));
-    data.push(this.encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
+    data.push(encodedFreq[0] & 0xff);
+    data.push(encodedHighAmp + ((encodedFreq[0] >> 8) & 0xff));
+    data.push(encodedFreq[1] + ((encodedLowAmp >> 8) & 0xff));
     data.push(encodedLowAmp & 0xff);
 
     return data;
@@ -113,6 +113,6 @@ class JoyCon {
     const ha = Math.min(1, this.balance[0][0] * value1 + this.balance[0][1] * value2);
     const la = Math.min(1, this.balance[1][0] * value1 + this.balance[1][1] * value2);
     this.sendReport(0x01, JoyCon.defaultRumbleData, 0x30, JoyCon.makeLEDData((ha + la) / 2));
-    this.sendReport(0x10, JoyCon.makeRumbleData(ha, la));
+    this.sendReport(0x10, JoyCon.makeRumbleData(this.encodedFreq, ha, la));
   }
 }
