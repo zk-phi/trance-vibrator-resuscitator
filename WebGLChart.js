@@ -74,9 +74,9 @@ class Chart {
 
   async initialize () {
     this.initializeArrayBuffer();
-    const identityVs = await fetch("./identity.vs", { cache: "no-cache" });
-    const chartFs = await fetch("./chart.fs", { cache: "no-cache" });
-    const chartProg = this.useNewProgram(await identityVs.text(), await chartFs.text());
+    const identityVs = await (await fetch("./identity.vs", { cache: "no-cache" })).text();
+    const chartFs = await (await fetch("./chart.fs", { cache: "no-cache" })).text();
+    const chartProg = this.useNewProgram(identityVs, chartFs);
     this.setArrayBuffer(chartProg, "pos");
     this.setInt(chartProg, "audio", 0);
     this.setFloat2(chartProg, "resolution", this.el.width, this.el.height);
