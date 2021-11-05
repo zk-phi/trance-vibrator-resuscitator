@@ -1,4 +1,12 @@
 class Chart {
+  static const IDENTITY_VS = `
+      precision highp float;
+      attribute vec2 pos;
+      void main (void) {
+        gl_Position = vec4(pos, 0.0, 1.0);
+      }
+  `;
+
   constructor (options) {
     this.el = document.createElement("canvas");
     this.el.width = options.width;
@@ -20,9 +28,9 @@ class Chart {
     return shader;
   }
 
-  buildProgram (vertexShader, fragmentShader) {
+  useNewProgram (fragmentShader) {
     const program = this.ctx.createProgram();
-    const vs = this.compileShader(this.ctx.VERTEX_SHADER, vertexShader);
+    const vs = this.compileShader(this.ctx.VERTEX_SHADER, Chart.IDENTITY_VS);
     const fs = this.compileShader(this.ctx.FRAGMENT_SHADER, fragmentShader);
     this.ctx.attachShader(program, vs);
     this.ctx.attachShader(program, fs);
@@ -64,9 +72,8 @@ class Chart {
   }
 
   async initialize () {
-    const vs = await fetch("./vertex.glsl", { cache: "no-cache" });
     const fs = await fetch("./fragment.glsl", { cache: "no-cache" });
-    const prog = this.buildProgram(await vs.text(), await fs.text());
+    const prog = this.buildProgram(await fs.text());
     const vertices = this.useTrivialVertices();
     this.bindVertices(prog, "pos", vertices);
     const audioLoc = this.ctx.getUniformLocation(prog, "audio");
