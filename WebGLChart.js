@@ -1,12 +1,4 @@
 class Chart {
-  static IDENTITY_VS = `
-    precision highp float;
-    attribute vec2 pos;
-    void main (void) {
-      gl_Position = vec4(pos, 0.0, 1.0);
-    }
-  `;
-
   constructor (options) {
     this.el = document.createElement("canvas");
     this.el.width = options.width;
@@ -28,9 +20,9 @@ class Chart {
     return shader;
   }
 
-  useNewProgram (fragmentShader) {
+  useNewProgram (vertexShader, fragmentShader) {
     const program = this.ctx.createProgram();
-    const vs = this.compileShader(this.ctx.VERTEX_SHADER, Chart.IDENTITY_VS);
+    const vs = this.compileShader(this.ctx.VERTEX_SHADER, vertexShader);
     const fs = this.compileShader(this.ctx.FRAGMENT_SHADER, fragmentShader);
     this.ctx.attachShader(program, vs);
     this.ctx.attachShader(program, fs);
@@ -82,11 +74,12 @@ class Chart {
 
   async initialize () {
     this.initializeArrayBuffer();
-    const fs = await fetch("./fragment.glsl", { cache: "no-cache" });
-    const prog = this.useNewProgram(await fs.text());
-    this.setArrayBuffer(prog, "pos");
-    this.setInt(prog, "audio", 0);
-    this.setFloat2(prog, "resolution", this.el.width, this.el.height);
+    const identityVs = await fetch("./identity.vs", { cache: "no-cache" });
+    const chartFs = await fetch("./chart.fs", { cache: "no-cache" });
+    const chartProg = this.useNewProgram(await identityVs.text(), await chartFs.text());
+    this.setArrayBuffer(chartProg, "pos");
+    this.setInt(chartProg, "audio", 0);
+    this.setFloat2(chartProg, "resolution", this.el.width, this.el.height);
     this.bindNewTexture(this.ctx.TEXTURE0);
     this.initialized = true;
   }
