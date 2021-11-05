@@ -42,7 +42,17 @@ class Chart {
     return program;
   }
 
-  bindNewVerticesBuffer () {
+  bindNewTexture (unit) {
+    const texture = this.ctx.createTexture();
+    this.bindTexture(texture, unit);
+    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_WRAP_S, this.ctx.CLAMP_TO_EDGE);
+    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_WRAP_T, this.ctx.CLAMP_TO_EDGE);
+    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_MIN_FILTER, this.ctx.NEAREST);
+    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_MAG_FILTER, this.ctx.NEAREST);
+    return texture;
+  }
+
+  initializeArrayBuffer () {
     const buf = this.ctx.createBuffer();
     this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, buf);
     this.ctx.bufferData(this.ctx.ARRAY_BUFFER, new Float32Array([
@@ -52,16 +62,6 @@ class Chart {
       1.0, -1.0,
     ]), this.ctx.STATIC_DRAW);
     return buf;
-  }
-
-  bindNewTexture () {
-    const texture = this.ctx.createTexture();
-    this.ctx.bindTexture(this.ctx.TEXTURE_2D, texture);
-    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_WRAP_S, this.ctx.CLAMP_TO_EDGE);
-    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_WRAP_T, this.ctx.CLAMP_TO_EDGE);
-    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_MIN_FILTER, this.ctx.NEAREST);
-    this.ctx.texParameteri(this.ctx.TEXTURE_2D, this.ctx.TEXTURE_MAG_FILTER, this.ctx.NEAREST);
-    return texture;
   }
 
   setArrayBuffer (prog, attrName) {
@@ -81,14 +81,13 @@ class Chart {
   }
 
   async initialize () {
+    this.initializeArrayBuffer();
     const fs = await fetch("./fragment.glsl", { cache: "no-cache" });
     const prog = this.useNewProgram(await fs.text());
-    const vertices = this.bindNewVerticesBuffer();
     this.setArrayBuffer(prog, "pos");
     this.setInt(prog, "audio", 0);
-    this.ctx.activeTexture(this.ctx.TEXTURE0);
-    this.bindNewTexture();
     this.setFloat2(prog, "resolution", this.el.width, this.el.height);
+    this.bindNewTexture(this.ctx.TEXTURE0);
     this.initialized = true;
   }
 
