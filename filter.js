@@ -80,7 +80,7 @@ function monitorAudio () {
   } else {
     value = 0.9 * value + 0.1 * newValue;
   }
-  chart.render(buf, value, -value);
+  chart.render(buf, value);
   setTimeout(monitorAudio, 30);
 }
 
