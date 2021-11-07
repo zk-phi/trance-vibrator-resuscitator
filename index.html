@@ -1,5 +1,5 @@
 <head>
-  <script src="./JoyCon.js"></script>
+  <script src="./TranceVibrator.js"></script>
   <script src="./WebGLChart.js"></script>
 </head>
 <body>
@@ -8,8 +8,13 @@
     <p>
       どの音声ソースに連動させるかを選んでください。
     </p>
-    <button onclick="initCapture();">別タブの音をキャプチャ</button>
-    <button onclick="enumerateDevices();">デバイスから選ぶ</button>
+    <p>
+      <button onclick="initCapture();">別タブの音をキャプチャ</button>
+      ※「タブの音声を共有」を ON にしてください
+    </p>
+    <p>
+      <button onclick="enumerateDevices();">デバイスから選ぶ</button>
+    </p>
   </section>
 
   <h2>Vibrator</h2>
@@ -28,5 +33,5 @@
   <per id="spectrum">
   </per>
 
-  <script src="filter.js"></script>
+  <script src="index.js"></script>
 </body>

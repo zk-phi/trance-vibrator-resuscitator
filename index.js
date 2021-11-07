@@ -95,7 +95,7 @@ function renderLevel () {
 let devs = [];
 
 async function connectVib () {
-  const dev = new JoyCon();
+  const dev = new TranceVibrator();
   await dev.connect();
   devs.push(dev);
 }
