@@ -3,6 +3,7 @@ class Chart {
     this.el = document.createElement("canvas");
     this.el.width = options.width;
     this.el.height = options.height;
+    options.el.parentNode.replaceChild(this.el, options.el);
     this.max = options.max;
     this.min = options.min;
     this.ctx = this.el.getContext("webgl2", { preserveDrawingBuffer: true });

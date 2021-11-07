@@ -62,6 +62,7 @@ async function streamInit (stream) {
 let value = 0;
 const buf = new Float32Array(FFT_SIZE);
 const chart = new Chart({
+  el: document.getElementById("spectrum"),
   width: 640,
   height: 320,
   min: -1,
@@ -71,7 +72,6 @@ const chart = new Chart({
   lineWidth: 4,
 });
 chart.initialize();
-document.body.appendChild(chart.el);
 function monitorAudio () {
   analyserNode.getFloatTimeDomainData(buf);
   const newValue = Math.min(1, (Math.max(...buf) - Math.min(...buf)) / 2);
