@@ -28,7 +28,7 @@ async function enumerateSources () {
   sources.forEach((dev, ix) => {
     const option = document.createElement("option");
     option.value = ix;
-    option.innerHTML = dev ? dev.label : "Capture from another tab (Chrome)";
+    option.innerHTML = dev ? dev.label : "Capture from another tab";
     select.appendChild(option);
   });
   const button = document.createElement("button");
