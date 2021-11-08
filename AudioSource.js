@@ -64,8 +64,8 @@ class AudioSource {
 
     const monitor = () => {
       analyzer.getFloatTimeDomainData(this.audioData);
-      const max = Math.max(...this.audioData);
-      const min = Math.min(...this.audioData);
+      const max = Math.min(1, Math.max(...this.audioData));
+      const min = Math.max(-1, Math.min(...this.audioData));
       const newValue = (max - min) / 2;
       if (newValue > this.value) {
         this.value = newValue;
