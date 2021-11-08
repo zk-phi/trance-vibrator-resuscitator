@@ -85,8 +85,4 @@ class AudioSource {
   getValue () {
     return this.value;
   }
-
-  getAudioData () {
-    return this.audioData;
-  }
 }
