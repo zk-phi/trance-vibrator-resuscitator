@@ -140,7 +140,7 @@ class Chart {
     this.initialized = true;
   }
 
-  render (f32Arr, value) {
+  render (f32Arr, value, hasNewData) {
     if (this.initialized && f32Arr.length > 0) {
       const min = this.min ?? Math.min(...f32Arr);
       const max = this.max ?? Math.max(...f32Arr);
@@ -154,6 +154,7 @@ class Chart {
         this.ctx.RED, this.ctx.FLOAT, data,
       );
       this.bindTexture(this.buffers[0].texture, this.ctx.TEXTURE1);
+      this.setFloat(this.bufferProg, "hasNewData", hasNewData ? 1 : 0);
       this.ctx.bindFramebuffer(this.ctx.FRAMEBUFFER, this.buffers[1].frame);
       this.ctx.drawArrays(this.ctx.TRIANGLE_STRIP, 0, 4);
       /* render to canvas */

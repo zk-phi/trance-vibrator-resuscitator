@@ -1,5 +1,4 @@
 const FFT_SIZE = 1024;
-const EXPONENT = 8;
 
 /* vo をあえて避けるなら -90 と 5000- くらいでいいかも */
 
@@ -63,24 +62,24 @@ let value = 0;
 const buf = new Float32Array(FFT_SIZE);
 const chart = new Chart({
   el: document.getElementById("spectrum"),
-  width: 640,
-  height: 320,
+  width: 800,
+  height: 600,
   min: -1,
   max: 1,
-  fillStyle: "rgba(0, 0, 0)",
-  strokeStyle: "orange",
-  lineWidth: 4,
 });
 chart.initialize();
 function monitorAudio () {
   analyserNode.getFloatTimeDomainData(buf);
-  const newValue = Math.min(1, (Math.max(...buf) - Math.min(...buf)) / 2);
+  const max = Math.max(...buf);
+  const min = Math.min(...buf);
+  if (max > 1.0) console.log("???");
+  const newValue = Math.min(1, (max - min) / 2);
   if (newValue > value) {
     value = newValue;
   } else {
     value = 0.9 * value + 0.1 * newValue;
   }
-  chart.render(buf, value);
+  chart.render(buf, value, max !== min);
   setTimeout(monitorAudio, 30);
 }
 
