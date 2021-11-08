@@ -27,8 +27,8 @@ class AudioSource {
     if (options.el) {
       this.chart = new Chart({
         el: options.el,
-        width: options.width || el.width,
-        height: options.height || el.height,
+        width: options.width || options.el.width,
+        height: options.height || options.el.height,
         min: -1,
         max: 1,
       });
