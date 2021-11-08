@@ -13,6 +13,6 @@ void main (void) {
     float newVal = clamp(pow(1. - d, 75.), 0., 1.);
 
     vec4 color = vec4(1., .5, .25, 1.);
-    float value = hasNewData * newVal * 2. + prevVal * .9;
+    float value = hasNewData * newVal * 2. + prevVal * .8;
     gl_FragColor = clamp(value * color, 0., 1.);
 }
