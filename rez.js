@@ -5,41 +5,44 @@ let devices = [];
 /* --- youtube player */
 
 const timeEl = document.getElementById("time");
+function onUpdate (value, statusString) {
+  timeEl.innerHTML = statusString;
+  document.body.style.setProperty("--vib1", value[0]);
+  document.body.style.setProperty("--vib2", value[1]);
+  if (started) {
+    devices.forEach(dev => dev.send(value[0], value[1]));
+  }
+}
+
 source.initialize("N_ATbQLVQjE", "player", RezInfiniteOSTPattern, {
   onLoad: () => {
     document.getElementById("videoStatus").innerHTML = "LOADED";
     source.playMuted(6);
   },
-  onUpdate: (value, statusString) => {
-    timeEl.innerHTML = statusString;
-    document.body.style.setProperty("--vib1", value[0]);
-    document.body.style.setProperty("--vib2", value[1]);
-    if (started) {
-      devices.forEach(dev => dev.send(value[0], value[1]));
-    }
-  },
+  onUpdate,
 });
 
 /* --- entrypoint */
 
 function unmute () {
-  if (!player) {
-    alert("Video is not loaded. Please refresh this page if it does not load.");
+  try {
+    source.unMute();
+    document.getElementById("unmute").remove();
+  } catch {
+    alert("Player not ready. Please refresh this page if it does not load.");
     return;
   }
-  source.unMute();
-  document.getElementById("unmute").remove();
 }
 
 function play () {
-  if (!player) {
-    alert("Video is not loaded. Please refresh this page if it does not load.");
-    return;
+  try {
+    source.start();
+    started = true;
+    document.getElementById("setup").remove();
+    document.getElementById("monitor").style.display = "block";
+  } catch {
+    alert("Player not ready. Please refresh this page if it does not load.");
   }
-  source.start();
-  started = true;
-  document.getElementById("setup").remove();
-  document.getElementById("monitor").style.display = "block";
 }
 
 async function connect () {
