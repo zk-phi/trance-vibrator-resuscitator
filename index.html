@@ -1,13 +1,11 @@
 <head>
   <script src="./TranceVibrator.js"></script>
   <script src="./WebGLChart.js"></script>
+  <script src="./AudioSource.js"></script>
 </head>
 <body>
   <h2>音声ソース</h2>
   <section id="audioDevice">
-    <p>
-      どの音声ソースに連動させるかを選んでください。
-    </p>
     <p>
       <button onclick="initCapture();">別タブの音をキャプチャ</button>
       ※「タブの音声を共有」を ON にしてください
@@ -18,8 +16,7 @@
   </section>
 
   <h2>Visualizer</h2>
-  <per id="spectrum">
-  </per>
+  <div id="source"></div>
 
   <h2>Vibrator</h2>
   <section>
