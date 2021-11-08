@@ -1,4 +1,4 @@
-https://zk-phi.github.io/hap-trance-vibrator-beat-web
+https://zk-phi.github.io/trance-vibrator-resuscitator
 
 Vanilla JS with WebUSB, WebHID, WebAudio, GamePad API, MediaDevices API, WebGL 2.0 etc
 
