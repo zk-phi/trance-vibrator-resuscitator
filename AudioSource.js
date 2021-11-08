@@ -3,7 +3,8 @@ class AudioSource {
 
   static async getDevices () {
     await navigator.mediaDevices.getUserMedia({ audio: true });
-    return await navigator.mediaDevices.enumerateDevices();
+    const devs = await navigator.mediaDevices.enumerateDevices();
+    return devs.filter(dev => dev.kind === "audioinput");
   }
 
   constructor () {
@@ -77,6 +78,9 @@ class AudioSource {
       this.chart.render(this.audioData, this.value, max !== min);
     };
     this.timer = setInterval(monitor, 30);
+  }
+
+  unMute () {
   }
 
   start () {

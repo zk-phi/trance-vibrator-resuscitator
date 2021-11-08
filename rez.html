@@ -7,6 +7,8 @@
   <script src="./DebugAudio.js"></script>
   <script src="./Pad.js"></script>
   <script src="./YouTubeSource.js"></script>
+  <script src="./AudioSource.js"></script>
+  <script src="./WebGLChart.js"></script>
   <script src="./RezInfiniteOSTPattern.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono" rel="stylesheet">
   <link href="rez.css" rel="stylesheet">
@@ -15,23 +17,28 @@
   <div id="player"></div>
 
   <div id="setup">
-    <h1>THE TRANCE VIBRATOR RESUSCITATOR (WIP)</h1>
+    <h1>THE TRANCE VIBRATOR RESUSCITATOR <small>by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a></small></h1>
     <p>
       <div class="ball" id="ball1"></div>
       <div class="ball" id="ball2"></div>
       <a id="unmute" href="javascript: unmute();">&gt; PREVIEW SOUND</a>
     </p>
     <p>Orchestrate "Trance Vibrator" (and/or other vibrators) in sync with "Rez" music.</p>
-    <p>Built with ♡ by <a target="_blank" href="https://twitter.com/zk_phi">@zk-phi</a>.</p>
+    <p>* This is an experimental app, without warranty of any kind.</p>
+    <p>* Latest Blink-powered browser (including Chrome, Opera, Edge) required.</p>
     <section>
-      <h2>NOTICES</h2>
-      <p>This is an experimental app, without warranty of any kind.</p>
-      <p>Latest Blink-powered browser (including Chrome, Opera, Edge) required.</p>
+      <h2>SOURCE</h2>
+      <p>Refresh this page if the video does not load.</p>
+      <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
+      <p id="sources">
+        (you may also
+        <a href="javascript: enumerateSources();">capture other audio devices / desktop audio</a>
+        to sync with)
+      </p>
     </section>
     <section>
-      <h2>STATUS</h2>
-      <p>Please refresh this page if the video does not load.</p>
-      <p>- VIDEO: <span id="videoStatus">(loading ...)</span></p>
+      <h2>VIBRATORS</h2>
+      <p>Connect devices and click "+ Connect" button to add.</p>
       <p>- CONNECTED DEVICES: <span id="deviceCount">0</span></p>
       <p>
         <select id="device">
@@ -64,9 +71,6 @@
     <div>
       SUB : <span id="vibrationContainer"><span class="vibration" id="vibration2"></span></span>
       <div class="ball" id="ball2"></div>
-    </div>
-    <div>
-      * Pause video before leaving.
     </div>
   </div>
 

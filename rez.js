@@ -2,8 +2,6 @@ let source = new YouTubeSource();
 let started = false;
 let devices = [];
 
-/* --- youtube player */
-
 const timeEl = document.getElementById("time");
 function onUpdate (value, statusString) {
   timeEl.innerHTML = statusString;
@@ -22,7 +20,35 @@ source.initialize("N_ATbQLVQjE", "player", RezInfiniteOSTPattern, {
   onUpdate,
 });
 
-/* --- entrypoint */
+let sources = [];
+async function enumerateSources () {
+  sources = [null, ...await AudioSource.getDevices()];
+  const select = document.createElement("select");
+  select.id = "sourceSelect";
+  sources.forEach((dev, ix) => {
+    const option = document.createElement("option");
+    option.value = ix;
+    option.innerHTML = dev ? dev.label : "Capture from another tab (Chrome)";
+    select.appendChild(option);
+  });
+  const button = document.createElement("button");
+  button.onclick = initSource;
+  button.innerHTML = "CAPTURE";
+  const el = document.getElementById("sources");
+  el.innerHTML = "";
+  el.appendChild(select);
+  el.appendChild(document.createTextNode(" "));
+  el.appendChild(button);
+}
+
+async function initSource () {
+  source.destroy();
+  source = new AudioSource();
+  const device = sources[document.getElementById("sourceSelect").value];
+  const width = AudioSource.fftSize;
+  const height = window.innerHeight / window.innerWidth * width;
+  await source.initialize(device, "player", height, width, { onUpdate });
+}
 
 function unmute () {
   try {
