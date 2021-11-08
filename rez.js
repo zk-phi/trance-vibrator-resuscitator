@@ -1,57 +1,24 @@
-let player;
+let source = new YouTubeSource();
+let started = false;
 let devices = [];
-let currentValue = [0, 0];
 
 /* --- youtube player */
 
-/* load youtube js api */
-!(function () {
-  const script = document.createElement('script');
-  script.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(script);
-})();
-
 const timeEl = document.getElementById("time");
-function monitorPlayerStatus () {
-  switch (player.getPlayerState()) {
-    case 1:
-      const time = player.getCurrentTime();
-      currentValue = RezInfiniteOSTPattern(time);
-      timeEl.innerHTML = time;
-      document.body.style.setProperty("--vib1", currentValue[0]);
-      document.body.style.setProperty("--vib2", currentValue[1]);
-      break;
-    default:
-      currentValue = [0, 0];
-      timeEl.innerHTML = "(paused)";
-      document.body.style.setProperty("--vib1", 0);
-      document.body.style.setProperty("--vib2", 0);
-  }
-  requestAnimationFrame(monitorPlayerStatus);
-}
-
-/* this function is called automatically when the iframe_api is ready */
-function onYouTubeIframeAPIReady () {
-  player = new YT.Player("player", {
-    videoId: "N_ATbQLVQjE",
-    playerVars: {
-      loop: 1,
-      autoplay: 1,
-      playsinline: 1,
-      enablejsapi: 1,
-    },
-    events: {
-      onReady: function () {
-        document.getElementById("videoStatus").innerHTML = "LOADED";
-        player.setVolume(0);
-        player.setLoop(true);
-        player.seekTo(6);
-        player.playVideo();
-        monitorPlayerStatus();
-      },
-    },
-  });
-}
+source.initialize("N_ATbQLVQjE", "player", RezInfiniteOSTPattern, {
+  onLoad: () => {
+    document.getElementById("videoStatus").innerHTML = "LOADED";
+    source.playMuted(6);
+  },
+  onUpdate: (value, statusString) => {
+    timeEl.innerHTML = statusString;
+    document.body.style.setProperty("--vib1", value[0]);
+    document.body.style.setProperty("--vib2", value[1]);
+    if (started) {
+      devices.forEach(dev => dev.send(value[0], value[1]));
+    }
+  },
+});
 
 /* --- entrypoint */
 
@@ -60,8 +27,7 @@ function unmute () {
     alert("Video is not loaded. Please refresh this page if it does not load.");
     return;
   }
-  player.unMute();
-  player.setVolume(100);
+  source.unMute();
   document.getElementById("unmute").remove();
 }
 
@@ -70,10 +36,8 @@ function play () {
     alert("Video is not loaded. Please refresh this page if it does not load.");
     return;
   }
-  player.seekTo(0);
-  player.unMute();
-  player.setVolume(100);
-  setInterval(() => devices.forEach(dev => dev.send(currentValue[0], currentValue[1])), 30);
+  source.start();
+  started = true;
   document.getElementById("setup").remove();
   document.getElementById("monitor").style.display = "block";
 }
