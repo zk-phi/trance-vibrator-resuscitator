@@ -26,15 +26,28 @@ class AudioSource {
     }
   }
 
-  async initWithStream (stream, elementId, width, height) {
+  async initialize (device, elementId, width, height, options = {}) {
+    let stream;
+    if (device) {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: { deviceId: device.deviceId },
+        video: false,
+      });
+    } else {
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true, /* required to be true by the API spec */
+        audio: true,
+      });
+    }
+
     const ctx = new AudioContext();
     this.source = new MediaStreamAudioSourceNode(ctx, {
       mediaStream: stream,
     });
     const lpfNode = new BiquadFilterNode(ctx, {
-      type: "lowpass",
+      type: options.filterType || "lowpass",
       Q: 1,
-      frequency: 90,
+      frequency: options.filterFreq || 90,
     });
     const gainNode = new GainNode(ctx, {
       gain: 3.5,
@@ -58,28 +71,14 @@ class AudioSource {
       } else {
         this.value = 0.9 * this.value + 0.1 * newValue;
       }
+      if (options.onUpdate) {
+        options.onUpdate([this.value, this.value], "Capturing");
+      }
       this.chart.render(this.audioData, this.value, max !== min);
     };
     this.timer = setInterval(monitor, 30);
   }
 
-  async initWithDevice (device, elementId, width, height) {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: device.deviceId },
-      video: false,
-    });
-    await this.initWithStream(stream, elementId, width, height);
-  }
-
-  async initWithDisplayMedia (elementId, width, height) {
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      video: true, /* required to be true by the API spec */
-      audio: true,
-    });
-    await this.initWithStream(stream, elementId, width, height);
-  }
-
-  getValue () {
-    return this.value;
+  start () {
   }
 }

@@ -1,4 +1,5 @@
 const source = new AudioSource();
+const devs = [];
 
 /* vo をあえて避けるなら -90 と 5000- くらいでいいかも */
 
@@ -15,36 +16,20 @@ async function enumerateDevices () {
   });
 }
 
-async function initCapture () {
-  await source.initWithDisplayMedia("source", 800, 600);
-  document.getElementById("audioDevice").innerHTML = `音声キャプチャに接続済み`;
-}
-
-async function initDevice (device) {
-  await source.initWithDevice(device, "source", 800, 600);
-  document.getElementById("audioDevice").innerHTML = `${device.label} に接続済み`;
-}
-
-/* ---- */
-
 const valueEl = document.getElementById("value");
-function renderLevel () {
-  const value = source.getValue();
-  valueEl.innerHTML = "|".repeat(value * 128) + " " + Math.floor(value * 255);
-  requestAnimationFrame(renderLevel);
+async function initDevice (device) {
+  await source.initialize(device, "source", 800, 600, {
+    onUpdate: (value, statusString) => {
+      valueEl.innerHTML = "|".repeat(value[0] * 128) + " " + Math.floor(value[0] * 255);
+      devs.forEach(dev => dev.send(value[0], 0));
+    }
+  });
+  const el = document.getElementById("audioDevice");
+  el.innerHTML = `${device ? device.label : '音声キャプチャ'} に接続済み`;
 }
-
-let devs = [];
 
 async function connectVib () {
   const dev = new TranceVibrator();
   await dev.connect();
   devs.push(dev);
-  renderLevel();
-  sendVib();
-}
-
-function sendVib () {
-  devs.forEach(dev => dev.send(source.getValue(), 0));
-  setTimeout(sendVib, 60);
 }
