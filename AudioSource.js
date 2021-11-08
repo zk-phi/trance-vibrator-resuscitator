@@ -6,28 +6,12 @@ class AudioSource {
     return await navigator.mediaDevices.enumerateDevices();
   }
 
-  static audioMonitor (instance) {
-    if (instance.analyzer) {
-      instance.analyzer.getFloatTimeDomainData(instance.audioData);
-      const max = Math.max(...instance.audioData);
-      const min = Math.min(...instance.audioData);
-      const newValue = (max - min) / 2;
-      if (newValue > instance.value) {
-        instance.value = newValue;
-      } else {
-        instance.value = 0.9 * instance.value + 0.1 * newValue;
-      }
-      instance.chart.render(instance.audioData, instance.value, max !== min);
-    }
-  }
-
   constructor (elementId, options) {
     this.chart = new Chart(elementId, { min: -1, max: 1, ...options });
     this.chart.initialize();
     this.value = 0;
     this.audioData = new Float32Array(AudioSource.fftSize);
     this.source = null;
-    this.analyzer = null;
     this.timer = null;
   }
 
@@ -56,12 +40,25 @@ class AudioSource {
     const gainNode = new GainNode(ctx, {
       gain: 3.5,
     });
-    this.analyzer = new AnalyserNode(ctx, {
+    const analyzer = new AnalyserNode(ctx, {
       fftSize: AudioSource.fftSize,
     });
     const dest = new MediaStreamAudioDestinationNode(ctx);
-    this.source.connect(lpfNode).connect(gainNode).connect(this.analyzer).connect(dest);
-    this.timer = setInterval(AudioSource.audioMonitor.bind(null, this), 30);
+    this.source.connect(lpfNode).connect(gainNode).connect(analyzer).connect(dest);
+
+    const monitor = () => {
+      analyzer.getFloatTimeDomainData(this.audioData);
+      const max = Math.max(...this.audioData);
+      const min = Math.min(...this.audioData);
+      const newValue = (max - min) / 2;
+      if (newValue > this.value) {
+        this.value = newValue;
+      } else {
+        this.value = 0.9 * this.value + 0.1 * newValue;
+      }
+      this.chart.render(this.audioData, this.value, max !== min);
+    };
+    this.timer = setInterval(monitor, 30);
   }
 
   async initWithDevice (device) {
