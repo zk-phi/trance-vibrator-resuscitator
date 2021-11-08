@@ -48,6 +48,8 @@ async function initSource () {
   const width = AudioSource.fftSize;
   const height = window.innerHeight / window.innerWidth * width;
   await source.initialize(device, "player", height, width, { onUpdate });
+  const msg = `- AUDIO CAPTURE: ${device ? device.label : 'Another tab'}`;
+  document.getElementById("sourceSection").innerHTML = msg;
 }
 
 function unmute () {
