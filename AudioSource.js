@@ -6,11 +6,10 @@ class AudioSource {
     return await navigator.mediaDevices.enumerateDevices();
   }
 
-  constructor (elementId, options) {
-    this.chart = new Chart(elementId, { min: -1, max: 1, ...options });
-    this.chart.initialize();
+  constructor () {
     this.value = 0;
     this.audioData = new Float32Array(AudioSource.fftSize);
+    this.chart = null;
     this.source = null;
     this.timer = null;
   }
@@ -27,7 +26,7 @@ class AudioSource {
     }
   }
 
-  async initWithStream (stream) {
+  async initWithStream (stream, elementId, width, height) {
     const ctx = new AudioContext();
     this.source = new MediaStreamAudioSourceNode(ctx, {
       mediaStream: stream,
@@ -46,6 +45,9 @@ class AudioSource {
     const dest = new MediaStreamAudioDestinationNode(ctx);
     this.source.connect(lpfNode).connect(gainNode).connect(analyzer).connect(dest);
 
+    this.chart = new Chart(elementId, { min: -1, max: 1, width, height });
+    this.chart.initialize();
+
     const monitor = () => {
       analyzer.getFloatTimeDomainData(this.audioData);
       const max = Math.max(...this.audioData);
@@ -61,20 +63,20 @@ class AudioSource {
     this.timer = setInterval(monitor, 30);
   }
 
-  async initWithDevice (device) {
+  async initWithDevice (device, elementId, width, height) {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: { deviceId: device.deviceId },
       video: false,
     });
-    await this.initWithStream(stream);
+    await this.initWithStream(stream, elementId, width, height);
   }
 
-  async initWithDisplayMedia () {
+  async initWithDisplayMedia (elementId, width, height) {
     const stream = await navigator.mediaDevices.getDisplayMedia({
       video: true, /* required to be true by the API spec */
       audio: true,
     });
-    await this.initWithStream(stream);
+    await this.initWithStream(stream, elementId, width, height);
   }
 
   getValue () {

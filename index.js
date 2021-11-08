@@ -1,4 +1,4 @@
-const source = new AudioSource("source", { width: 800, height: 600 });
+const source = new AudioSource();
 
 /* vo をあえて避けるなら -90 と 5000- くらいでいいかも */
 
@@ -16,12 +16,12 @@ async function enumerateDevices () {
 }
 
 async function initCapture () {
-  await source.initWithDisplayMedia();
+  await source.initWithDisplayMedia("source", 800, 600);
   document.getElementById("audioDevice").innerHTML = `音声キャプチャに接続済み`;
 }
 
 async function initDevice (device) {
-  await source.initWithDevice(device);
+  await source.initWithDevice(device, "source", 800, 600);
   document.getElementById("audioDevice").innerHTML = `${device.label} に接続済み`;
 }
 
