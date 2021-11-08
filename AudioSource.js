@@ -17,9 +17,7 @@ class AudioSource {
       } else {
         instance.value = 0.9 * instance.value + 0.1 * newValue;
       }
-      if (instance.chart) {
-        instance.chart.render(instance.audioData, instance.value, max !== min);
-      }
+      instance.chart.render(instance.audioData, instance.value, max !== min);
     }
   }
 
