@@ -3,12 +3,17 @@ class Chart {
     this.el = document.createElement("canvas");
     this.el.width = options.width;
     this.el.height = options.height;
-    options.el.parentNode.replaceChild(this.el, options.el);
+    this.origEl = options.el.cloneNode();
+    options.el.replaceWith(this.el);
     this.max = options.max;
     this.min = options.min;
     this.ctx = this.el.getContext("webgl2", { preserveDrawingBuffer: true });
     this.ctx.getExtension("OES_standard_derivatives");
     this.ctx.initialized = false;
+  }
+
+  destroy () {
+    this.el.replaceWith(this.origEl);
   }
 
   compileShader (kind, source) {

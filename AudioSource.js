@@ -36,12 +36,26 @@ class AudioSource {
     }
     this.value = 0;
     this.audioData = new Float32Array(AudioSource.fftSize);
+    this.source = null;
     this.analyzer = null;
+    this.timer = null;
+  }
+
+  destroy () {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    if (this.chart) {
+      this.chart.destroy();
+    }
+    if (this.source) {
+      this.source.mediaStream.getTracks().forEach(track => track.stop());
+    }
   }
 
   async initWithStream (stream) {
     const ctx = new AudioContext();
-    const source = new MediaStreamAudioSourceNode(ctx, {
+    this.source = new MediaStreamAudioSourceNode(ctx, {
       mediaStream: stream,
     });
     const lpfNode = new BiquadFilterNode(ctx, {
@@ -56,8 +70,8 @@ class AudioSource {
       fftSize: AudioSource.fftSize,
     });
     const dest = new MediaStreamAudioDestinationNode(ctx);
-    source.connect(lpfNode).connect(gainNode).connect(this.analyzer).connect(dest);
-    setInterval(AudioSource.audioMonitor.bind(null, this), 30);
+    this.source.connect(lpfNode).connect(gainNode).connect(this.analyzer).connect(dest);
+    this.timer = setInterval(AudioSource.audioMonitor.bind(null, this), 30);
   }
 
   async initWithDevice (device) {
