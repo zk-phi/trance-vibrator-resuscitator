@@ -23,17 +23,9 @@ class AudioSource {
     }
   }
 
-  constructor (options) {
-    if (options.el) {
-      this.chart = new Chart({
-        el: options.el,
-        width: options.width || options.el.width,
-        height: options.height || options.el.height,
-        min: -1,
-        max: 1,
-      });
-      this.chart.initialize();
-    }
+  constructor (elementId, options) {
+    this.chart = new Chart(elementId, { min: -1, max: 1, ...options });
+    this.chart.initialize();
     this.value = 0;
     this.audioData = new Float32Array(AudioSource.fftSize);
     this.source = null;

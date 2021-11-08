@@ -1,10 +1,12 @@
 class Chart {
-  constructor (options) {
+  constructor (elementId, options) {
+    const origEl = document.getElementById(elementId);
+    this.origEl = origEl.cloneNode();
     this.el = document.createElement("canvas");
-    this.el.width = options.width;
-    this.el.height = options.height;
-    this.origEl = options.el.cloneNode();
-    options.el.replaceWith(this.el);
+    this.el.id = elementId;
+    this.el.width = options.width || origEl.width;
+    this.el.height = options.height || origEl.height;
+    origEl.replaceWith(this.el);
     this.max = options.max;
     this.min = options.min;
     this.ctx = this.el.getContext("webgl2", { preserveDrawingBuffer: true });

@@ -1,8 +1,4 @@
-const source = new AudioSource({
-  el: document.getElementById("source"),
-  width: 800,
-  height: 600,
-});;
+const source = new AudioSource("source", { width: 800, height: 600 });
 
 /* vo をあえて避けるなら -90 と 5000- くらいでいいかも */
 
