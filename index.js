@@ -72,8 +72,7 @@ function monitorAudio () {
   analyserNode.getFloatTimeDomainData(buf);
   const max = Math.max(...buf);
   const min = Math.min(...buf);
-  if (max > 1.0) console.log("???");
-  const newValue = Math.min(1, (max - min) / 2);
+  const newValue = (max - min) / 2;
   if (newValue > value) {
     value = newValue;
   } else {
