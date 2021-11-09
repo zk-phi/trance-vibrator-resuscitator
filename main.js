@@ -42,12 +42,13 @@ async function enumerateSources () {
 }
 
 async function initSource () {
-  source.destroy();
-  source = new AudioSource();
+  const newSource = new AudioSource();
   const device = sources[document.getElementById("sourceSelect").value];
   const width = AudioSource.fftSize;
   const height = window.innerHeight / window.innerWidth * width;
-  await source.initialize(device, "player", height, width, { onUpdate });
+  await newSource.initialize(device, "player", height, width, { onUpdate });
+  source.destroy();
+  source = newSource;
   const msg = `- AUDIO CAPTURE: ${device ? device.label : 'Another tab'}`;
   document.getElementById("sourceSection").innerHTML = msg;
 }
