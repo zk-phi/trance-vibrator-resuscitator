@@ -10,8 +10,17 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 16px;
+  font-family: 'Geo', monospace;
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  line-height: 1.0em;
+}
+
+h1, h2 {
+}
+
+small {
+  font-size: 0.5em;
 }
 
 #player {
@@ -37,9 +46,9 @@ body {
 
 #monitor {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 16px;
+  top: 1em;
+  left: 1em;
+  padding: 1em;
   background: var(--overlay);
   line-height: 2;
   z-index: 2;
@@ -77,7 +86,8 @@ button, select {
   color: var(--fg);
   border: 1px solid var(--fg);
   background: transparent;
-  padding: 8px 12px;
+  font-size: 16px;
+  padding: 0.5em 0.75em;
   font-family: inherit;
 }
 
@@ -95,8 +105,8 @@ a:active, button:active {
 .ball {
   display: inline-block;
   vertical-align: middle;
-  width: 24px;
-  height: 24px;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: 4px;
   background: var(--fg);
   animation: vib .01s linear infinite;
