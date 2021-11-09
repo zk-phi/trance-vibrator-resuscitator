@@ -1,5 +1,8 @@
 class AudioSource {
-  static fftSize = 1024;
+  // 44100hz / 30fps = 1470samples/frame
+  // size 1024 => 450 samples lost
+  // size 2048 => 550 samples duplicated
+  static fftSize = 2048;
 
   static async getDevices () {
     await navigator.mediaDevices.getUserMedia({ audio: true });

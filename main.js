@@ -44,8 +44,8 @@ async function enumerateSources () {
 async function initSource () {
   const newSource = new AudioSource();
   const device = sources[document.getElementById("sourceSelect").value];
-  const width = AudioSource.fftSize;
-  const height = window.innerHeight / window.innerWidth * width;
+  const width = Math.min(window.innerHeight, AudioSource.fftSize);
+  const height = Math.round(window.innerHeight / window.innerWidth * width);
   await newSource.initialize(device, "player", height, width, { onUpdate });
   source.destroy();
   source = newSource;
