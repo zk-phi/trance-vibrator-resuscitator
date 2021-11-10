@@ -132,9 +132,9 @@ class Chart {
     this.initializeArrayBuffer();
     this.buffers = [this.bindNewFrame(), this.bindNewFrame()];
     this.audioTexture = this.bindNewTexture();
-    const identityVs = await (await fetch("./identity.vs", { cache: "no-cache" })).text();
-    const bufferFs = await (await fetch("./buffer.fs", { cache: "no-cache" })).text();
-    const screenFs = await (await fetch("./screen.fs", { cache: "no-cache" })).text();
+    const identityVs = await (await fetch("./shaders/identity.vs", { cache: "no-cache" })).text();
+    const bufferFs = await (await fetch("./shaders/buffer.fs", { cache: "no-cache" })).text();
+    const screenFs = await (await fetch("./shaders/screen.fs", { cache: "no-cache" })).text();
     this.bufferProg = this.useNewProgram(identityVs, bufferFs);
     this.setArrayBuffer(this.bufferProg, "pos");
     this.setInt(this.bufferProg, "audio", 0);
